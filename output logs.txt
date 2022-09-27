@@ -1,0 +1,489 @@
+Epoch 1/20
+-------------------------------
+Training batch 0/1455 -> Loss: 7.181782245635986  Accuracy: 0.0%
+Training batch 100/1455 -> Loss: 1.4060345888137817  Accuracy: 53.125%
+Training batch 200/1455 -> Loss: 0.8968541622161865  Accuracy: 68.75%
+Training batch 300/1455 -> Loss: 0.8839529156684875  Accuracy: 73.4375%
+Training batch 400/1455 -> Loss: 0.6790874004364014  Accuracy: 81.25%
+Training batch 500/1455 -> Loss: 0.48038092255592346  Accuracy: 87.5%
+Training batch 600/1455 -> Loss: 0.7021996378898621  Accuracy: 75.0%
+Training batch 700/1455 -> Loss: 0.3132261037826538  Accuracy: 92.1875%
+Training batch 800/1455 -> Loss: 0.47289925813674927  Accuracy: 89.0625%
+Training batch 900/1455 -> Loss: 0.7356780767440796  Accuracy: 81.25%
+Training batch 1000/1455 -> Loss: 0.1651352196931839  Accuracy: 93.75%
+Training batch 1100/1455 -> Loss: 0.15869741141796112  Accuracy: 96.875%
+Training batch 1200/1455 -> Loss: 0.3532359004020691  Accuracy: 84.375%
+Training batch 1300/1455 -> Loss: 0.3616715669631958  Accuracy: 89.0625%
+Training batch 1400/1455 -> Loss: 0.2418140023946762  Accuracy: 93.75%
+
+Epoch duration: 244.69446563720703 seconds
+Training | Loss: 0.009431751664587066 Accuracy: 79.73238544228353%
+Testing  | Loss: 0.008852198381827927 Accuracy: 82.50126071608675% 
+
+79.73238544228353
+Epoch 2/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.23729151487350464  Accuracy: 93.75%
+Training batch 100/1455 -> Loss: 0.24631430208683014  Accuracy: 90.625%
+Training batch 200/1455 -> Loss: 0.1399277150630951  Accuracy: 96.875%
+Training batch 300/1455 -> Loss: 0.3011200726032257  Accuracy: 90.625%
+Training batch 400/1455 -> Loss: 0.13071294128894806  Accuracy: 96.875%
+Training batch 500/1455 -> Loss: 0.26543736457824707  Accuracy: 89.0625%
+Training batch 600/1455 -> Loss: 0.21440990269184113  Accuracy: 95.3125%
+Training batch 700/1455 -> Loss: 0.07447715103626251  Accuracy: 96.875%
+Training batch 800/1455 -> Loss: 0.26401665806770325  Accuracy: 89.0625%
+Training batch 900/1455 -> Loss: 0.07996510714292526  Accuracy: 96.875%
+Training batch 1000/1455 -> Loss: 0.1912604570388794  Accuracy: 95.3125%
+Training batch 1100/1455 -> Loss: 0.10352546721696854  Accuracy: 95.3125%
+Training batch 1200/1455 -> Loss: 0.1903700977563858  Accuracy: 93.75%
+Training batch 1300/1455 -> Loss: 0.16909685730934143  Accuracy: 95.3125%
+Training batch 1400/1455 -> Loss: 0.24014177918434143  Accuracy: 90.625%
+
+Epoch duration: 244.32006311416626 seconds
+Training | Loss: 0.002622302216905403 Accuracy: 94.43722548566888%
+Testing  | Loss: 0.0033688476883096644 Accuracy: 93.19213313161876% 
+
+94.43722548566888
+Epoch 3/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.3527298867702484  Accuracy: 90.625%
+Training batch 100/1455 -> Loss: 0.022537438198924065  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.11226850003004074  Accuracy: 96.875%
+Training batch 300/1455 -> Loss: 0.3866502344608307  Accuracy: 87.5%
+Training batch 400/1455 -> Loss: 0.0731205940246582  Accuracy: 96.875%
+Training batch 500/1455 -> Loss: 0.057627126574516296  Accuracy: 98.4375%
+Training batch 600/1455 -> Loss: 0.08713508397340775  Accuracy: 96.875%
+Training batch 700/1455 -> Loss: 0.09465087205171585  Accuracy: 93.75%
+Training batch 800/1455 -> Loss: 0.11120086163282394  Accuracy: 93.75%
+Training batch 900/1455 -> Loss: 0.16018237173557281  Accuracy: 98.4375%
+Training batch 1000/1455 -> Loss: 0.12337105721235275  Accuracy: 95.3125%
+Training batch 1100/1455 -> Loss: 0.12913015484809875  Accuracy: 96.875%
+Training batch 1200/1455 -> Loss: 0.07177720963954926  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.06978942453861237  Accuracy: 98.4375%
+Training batch 1400/1455 -> Loss: 0.030236953869462013  Accuracy: 98.4375%
+
+Epoch duration: 242.0949728488922 seconds
+Training | Loss: 0.0016770708745091818 Accuracy: 96.37560540813367%
+Testing  | Loss: 0.0034710676665265215 Accuracy: 93.19213313161876% 
+
+96.37560540813367
+Epoch 4/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.04236135259270668  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.11033572256565094  Accuracy: 96.875%
+Training batch 200/1455 -> Loss: 0.06340223550796509  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.029277626425027847  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.021656561642885208  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.023376047611236572  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.10508616268634796  Accuracy: 95.3125%
+Training batch 700/1455 -> Loss: 0.1516578644514084  Accuracy: 98.4375%
+Training batch 800/1455 -> Loss: 0.08030710369348526  Accuracy: 96.875%
+Training batch 900/1455 -> Loss: 0.053735192865133286  Accuracy: 96.875%
+Training batch 1000/1455 -> Loss: 0.02638985402882099  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.11911576986312866  Accuracy: 96.875%
+Training batch 1200/1455 -> Loss: 0.12053267657756805  Accuracy: 92.1875%
+Training batch 1300/1455 -> Loss: 0.09262549132108688  Accuracy: 96.875%
+Training batch 1400/1455 -> Loss: 0.09748048335313797  Accuracy: 96.875%
+
+Epoch duration: 242.01547122001648 seconds
+Training | Loss: 0.001121308121957173 Accuracy: 97.57085020242914%
+Testing  | Loss: 0.002596142541652849 Accuracy: 95.00756429652043% 
+
+97.57085020242914
+Epoch 5/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.010198799893260002  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.01330412644892931  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.031046604737639427  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.013063968159258366  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.05134914070367813  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.06098807975649834  Accuracy: 96.875%
+Training batch 600/1455 -> Loss: 0.035123061388731  Accuracy: 98.4375%
+Training batch 700/1455 -> Loss: 0.01776222325861454  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.09605852514505386  Accuracy: 96.875%
+Training batch 900/1455 -> Loss: 0.011315794661641121  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.015320788137614727  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.026122787967324257  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.028988903388381004  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.01155187003314495  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.043969038873910904  Accuracy: 98.4375%
+
+Epoch duration: 242.42580771446228 seconds
+Training | Loss: 0.0009388168914470452 Accuracy: 97.97570850202429%
+Testing  | Loss: 0.0019746801885905376 Accuracy: 96.62128088754413% 
+
+97.97570850202429
+Epoch 6/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.016413245350122452  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.005293687339872122  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.1417822688817978  Accuracy: 95.3125%
+Training batch 300/1455 -> Loss: 0.019405722618103027  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.15410207211971283  Accuracy: 95.3125%
+Training batch 500/1455 -> Loss: 0.033026427030563354  Accuracy: 98.4375%
+Training batch 600/1455 -> Loss: 0.0034805506002157927  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.02327222377061844  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.025042062625288963  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.03143041953444481  Accuracy: 98.4375%
+Training batch 1000/1455 -> Loss: 0.01771865412592888  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.0673525482416153  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.13997656106948853  Accuracy: 93.75%
+Training batch 1300/1455 -> Loss: 0.023779194802045822  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.0467398427426815  Accuracy: 98.4375%
+
+Epoch duration: 244.95296931266785 seconds
+Training | Loss: 0.0008028561283900258 Accuracy: 98.25384722774085%
+Testing  | Loss: 0.0020397902507216597 Accuracy: 96.2682803832577% 
+
+98.25384722774085
+Epoch 7/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.039590876549482346  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.01855413429439068  Accuracy: 98.4375%
+Training batch 200/1455 -> Loss: 0.06607827544212341  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.04517410695552826  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.012886587530374527  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.014341313391923904  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.02639632858335972  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.10870194435119629  Accuracy: 96.875%
+Training batch 800/1455 -> Loss: 0.018723653629422188  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.01879146695137024  Accuracy: 98.4375%
+Training batch 1000/1455 -> Loss: 0.03403865918517113  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.025844698771834373  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.0851706713438034  Accuracy: 95.3125%
+Training batch 1300/1455 -> Loss: 0.0548165962100029  Accuracy: 98.4375%
+Training batch 1400/1455 -> Loss: 0.020824646577239037  Accuracy: 98.4375%
+
+Epoch duration: 242.90393114089966 seconds
+Training | Loss: 0.0005792373387913336 Accuracy: 98.75535604978575%
+Testing  | Loss: 0.0019213655797752447 Accuracy: 97.22642460917803% 
+
+98.75535604978575
+Epoch 8/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.009145286865532398  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.02747572958469391  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.01558738388121128  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.008637902326881886  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.030955493450164795  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.004795587621629238  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.14964163303375244  Accuracy: 93.75%
+Training batch 700/1455 -> Loss: 0.08431727439165115  Accuracy: 95.3125%
+Training batch 800/1455 -> Loss: 0.012971470132470131  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.10623174160718918  Accuracy: 96.875%
+Training batch 1000/1455 -> Loss: 0.22930212318897247  Accuracy: 93.75%
+Training batch 1100/1455 -> Loss: 0.0034651749301701784  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.037361275404691696  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.013195265084505081  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.017351282760500908  Accuracy: 100.0%
+
+Epoch duration: 241.97603106498718 seconds
+Training | Loss: 0.0005356334472461545 Accuracy: 98.83482425713333%
+Testing  | Loss: 0.003474278717414033 Accuracy: 95.20927887039839% 
+
+98.83482425713333
+Epoch 9/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.02958393469452858  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.021393626928329468  Accuracy: 98.4375%
+Training batch 200/1455 -> Loss: 0.03827878460288048  Accuracy: 96.875%
+Training batch 300/1455 -> Loss: 0.002713690046221018  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.026551945134997368  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.08860696852207184  Accuracy: 96.875%
+Training batch 600/1455 -> Loss: 0.007472329773008823  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.00133254483807832  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.0149068683385849  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.009968215599656105  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.015809012576937675  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.06222100183367729  Accuracy: 95.3125%
+Training batch 1200/1455 -> Loss: 0.025402748957276344  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.015228023752570152  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.007551808841526508  Accuracy: 100.0%
+
+Epoch duration: 243.51375913619995 seconds
+Training | Loss: 0.0004410687232215324 Accuracy: 99.02919919672676%
+Testing  | Loss: 0.0037960138545755297 Accuracy: 94.40242057488655% 
+
+99.02919919672676
+Epoch 10/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.0026227151975035667  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.002340545179322362  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.053072474896907806  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.03955527022480965  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.03774408996105194  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.005449975375086069  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.01694296859204769  Accuracy: 98.4375%
+Training batch 700/1455 -> Loss: 0.001457132981158793  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.03992905467748642  Accuracy: 98.4375%
+Training batch 900/1455 -> Loss: 0.007588389329612255  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.02098718285560608  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.0014210282824933529  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.018107324838638306  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.008112456649541855  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.0051378351636230946  Accuracy: 100.0%
+
+Epoch duration: 243.93269729614258 seconds
+Training | Loss: 0.00037739098254262627 Accuracy: 99.1763227697892%
+Testing  | Loss: 0.002424723659304771 Accuracy: 97.02471003530006% 
+
+99.1763227697892
+Epoch 11/20
+-------------------------------
+
+Traceback (most recent call last):
+  File "/home/jason/miniconda3/lib/python3.8/multiprocessing/util.py", line 300, in _run_finalizers
+    finalizer()
+  File "/home/jason/miniconda3/lib/python3.8/multiprocessing/util.py", line 224, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+  File "/home/jason/miniconda3/lib/python3.8/multiprocessing/util.py", line 133, in _remove_temp_dir
+    rmtree(tempdir)
+  File "/home/jason/miniconda3/lib/python3.8/shutil.py", line 722, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/jason/miniconda3/lib/python3.8/shutil.py", line 720, in rmtree
+    os.rmdir(path)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-5y1kne9l'
+
+Training batch 0/1455 -> Loss: 0.00728411041200161  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.007460279390215874  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.0019954321905970573  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.010249515995383263  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.09799116104841232  Accuracy: 96.875%
+Training batch 500/1455 -> Loss: 0.006353572942316532  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.03139451891183853  Accuracy: 98.4375%
+Training batch 700/1455 -> Loss: 0.004220960661768913  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.030643656849861145  Accuracy: 98.4375%
+Training batch 900/1455 -> Loss: 0.01659982278943062  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.0861472487449646  Accuracy: 96.875%
+Training batch 1100/1455 -> Loss: 0.0978022962808609  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.02212662622332573  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.1545930951833725  Accuracy: 93.75%
+Training batch 1400/1455 -> Loss: 0.0049982271157205105  Accuracy: 100.0%
+
+Epoch duration: 242.4896378517151 seconds
+Training | Loss: 0.0003886476783259888 Accuracy: 99.17310108570753%
+Testing  | Loss: 0.0018111196005436538 Accuracy: 98.03328290468987% 
+
+99.17310108570753
+Epoch 12/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.07209823280572891  Accuracy: 96.875%
+Training batch 100/1455 -> Loss: 0.00027503230376169086  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.009706719778478146  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.04001361131668091  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.04872066527605057  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.0030451426282525063  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.05570787936449051  Accuracy: 98.4375%
+Training batch 700/1455 -> Loss: 0.012850118800997734  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.002302455483004451  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.0038388639222830534  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.005390815902501345  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.021472614258527756  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.0001236034877365455  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.014600365422666073  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.03229179605841637  Accuracy: 98.4375%
+
+Epoch duration: 245.78198170661926 seconds
+Training | Loss: 0.00028882328607669826 Accuracy: 99.39754507672977%
+Testing  | Loss: 0.003020716692305504 Accuracy: 95.96570852244075% 
+
+99.39754507672977
+Epoch 13/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.02147482894361019  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.003948225639760494  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.05067422613501549  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.01033073104918003  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.002787512494251132  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.132784903049469  Accuracy: 98.4375%
+Training batch 600/1455 -> Loss: 0.001966264797374606  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.011325637809932232  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.018672753125429153  Accuracy: 98.4375%
+Training batch 900/1455 -> Loss: 0.0007891030400060117  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.03442986682057381  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.027610860764980316  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.0001499562058597803  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.0007351835374720395  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.045283105224370956  Accuracy: 96.875%
+
+Epoch duration: 248.14712500572205 seconds
+Training | Loss: 0.0003024774405404648 Accuracy: 99.33740697387213%
+Testing  | Loss: 0.0021997825701958657 Accuracy: 97.12556732223904% 
+
+99.33740697387213
+Epoch 14/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.03064856491982937  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.007036622613668442  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.027000827714800835  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.0003501111641526222  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.00029828707920387387  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.000249591568717733  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.0001667369797360152  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.0030699369963258505  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.0072047109715640545  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.014841217547655106  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.0031340268906205893  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.009226846508681774  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.0034357812255620956  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.002046421403065324  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.001711505465209484  Accuracy: 100.0%
+
+Epoch duration: 242.97985291481018 seconds
+Training | Loss: 0.0002640020064742898 Accuracy: 99.45338760081187%
+Testing  | Loss: 0.0026850341315523534 Accuracy: 97.02471003530006% 
+
+99.45338760081187
+Epoch 15/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.009238449856638908  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.005731436423957348  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.012820769101381302  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 8.351544238394126e-06  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.0008546256576664746  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.004802752286195755  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.00015543875633738935  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.004952530842274427  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.002719117794185877  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.002842922927811742  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.017534887418150902  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.005151643417775631  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.039064519107341766  Accuracy: 98.4375%
+Training batch 1300/1455 -> Loss: 0.002933814888820052  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.006664743181318045  Accuracy: 100.0%
+
+Epoch duration: 248.11567449569702 seconds
+Training | Loss: 0.0001994384705461752 Accuracy: 99.58010717469044%
+Testing  | Loss: 0.001516188284515136 Accuracy: 98.18456883509835% 
+
+99.58010717469044
+Epoch 16/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.02689269371330738  Accuracy: 98.4375%
+Training batch 100/1455 -> Loss: 0.0005005369894206524  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.028051180765032768  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.005206272471696138  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.0002441534888930619  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.0010145484702661633  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.003837697906419635  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.03406944498419762  Accuracy: 98.4375%
+Training batch 800/1455 -> Loss: 0.01956155337393284  Accuracy: 98.4375%
+Training batch 900/1455 -> Loss: 0.0379788801074028  Accuracy: 98.4375%
+Training batch 1000/1455 -> Loss: 0.000316684105200693  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.04573994502425194  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.01624821126461029  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.00010422374907648191  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.0006938832812011242  Accuracy: 100.0%
+
+Epoch duration: 245.67121696472168 seconds
+Training | Loss: 0.0002212091039777624 Accuracy: 99.55540759673106%
+Testing  | Loss: 0.0017212183243108738 Accuracy: 97.73071104387293% 
+
+99.55540759673106
+Epoch 17/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.002985776402056217  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.0003205516841262579  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.0002302234061062336  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.11936207115650177  Accuracy: 96.875%
+Training batch 400/1455 -> Loss: 0.101096972823143  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.0046774656511843204  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.000977766583673656  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.002792692743241787  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.0003348377358634025  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.00043243542313575745  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.005628315266221762  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.0006860874127596617  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.013483111746609211  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.003603153396397829  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.0004066197434440255  Accuracy: 100.0%
+
+Epoch duration: 243.33219075202942 seconds
+Training | Loss: 0.00020458618361462782 Accuracy: 99.55755538611884%
+Testing  | Loss: 0.0032765894997451666 Accuracy: 96.2682803832577% 
+
+99.55755538611884
+Epoch 18/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.0005674757994711399  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.0023259958252310753  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.13880778849124908  Accuracy: 98.4375%
+Training batch 300/1455 -> Loss: 0.010989832691848278  Accuracy: 100.0%
+Training batch 400/1455 -> Loss: 0.0008361843647435308  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.0017678268486633897  Accuracy: 100.0%
+Training batch 600/1455 -> Loss: 0.002397607546299696  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.0002708600659389049  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 9.85832666628994e-05  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.0063672191463410854  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.0006897145067341626  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.00021457830735016614  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.0001874081790447235  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.0005245922366157174  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.006176032591611147  Accuracy: 100.0%
+
+Epoch duration: 245.24146008491516 seconds
+Training | Loss: 0.00020325024652177465 Accuracy: 99.57044212244547%
+Testing  | Loss: 0.0017570055066657793 Accuracy: 98.13414019162886% 
+
+99.57044212244547
+Epoch 19/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.0016459005419164896  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.001409237622283399  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.002655193442478776  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.017604872584342957  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.04522234573960304  Accuracy: 98.4375%
+Training batch 500/1455 -> Loss: 0.037282295525074005  Accuracy: 98.4375%
+Training batch 600/1455 -> Loss: 0.0013106788974255323  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.0009534400887787342  Accuracy: 100.0%
+Training batch 800/1455 -> Loss: 0.02369159832596779  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.15199178457260132  Accuracy: 95.3125%
+Training batch 1000/1455 -> Loss: 0.00014048704179003835  Accuracy: 100.0%
+Training batch 1100/1455 -> Loss: 0.013872590847313404  Accuracy: 98.4375%
+Training batch 1200/1455 -> Loss: 0.002046291483566165  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.00012012461229460314  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.004538810811936855  Accuracy: 100.0%
+
+Epoch duration: 244.56459975242615 seconds
+Training | Loss: 0.000182358479109442 Accuracy: 99.62091517305812%
+Testing  | Loss: 0.001900090930829143 Accuracy: 97.78113968734242% 
+
+99.62091517305812
+Epoch 20/20
+-------------------------------
+Training batch 0/1455 -> Loss: 0.0005503917927853763  Accuracy: 100.0%
+Training batch 100/1455 -> Loss: 0.00022783537860959768  Accuracy: 100.0%
+Training batch 200/1455 -> Loss: 0.003712956327944994  Accuracy: 100.0%
+Training batch 300/1455 -> Loss: 0.04310284182429314  Accuracy: 98.4375%
+Training batch 400/1455 -> Loss: 0.01368738804012537  Accuracy: 100.0%
+Training batch 500/1455 -> Loss: 0.09588903188705444  Accuracy: 98.4375%
+Training batch 600/1455 -> Loss: 0.005178232677280903  Accuracy: 100.0%
+Training batch 700/1455 -> Loss: 0.08937937021255493  Accuracy: 96.875%
+Training batch 800/1455 -> Loss: 0.003791287774220109  Accuracy: 100.0%
+Training batch 900/1455 -> Loss: 0.0029330430552363396  Accuracy: 100.0%
+Training batch 1000/1455 -> Loss: 0.024217458441853523  Accuracy: 98.4375%
+Training batch 1100/1455 -> Loss: 0.00017840156215243042  Accuracy: 100.0%
+Training batch 1200/1455 -> Loss: 0.0019193240441381931  Accuracy: 100.0%
+Training batch 1300/1455 -> Loss: 0.003277187468484044  Accuracy: 100.0%
+Training batch 1400/1455 -> Loss: 0.0042816223576664925  Accuracy: 100.0%
+
+Epoch duration: 242.66198897361755 seconds
+Training | Loss: 0.00014845219018558498 Accuracy: 99.7100484326507%
+Testing  | Loss: 0.001405430093425232 Accuracy: 98.48714069591529% 
+
+99.7100484326507
+Done!
+
+
+
+print(testa_history) 
+print(traina_history) 
+print(testl_history) 
+print(trainl_history)
+
+
+[82.50126071608675, 93.19213313161876, 93.19213313161876, 95.00756429652043, 96.62128088754413, 96.2682803832577, 97.22642460917803, 95.20927887039839, 94.40242057488655, 97.02471003530006, 98.03328290468987, 95.96570852244075, 97.12556732223904, 97.02471003530006, 98.18456883509835, 97.73071104387293, 96.2682803832577, 98.13414019162886, 97.78113968734242, 98.48714069591529]
+[79.73238544228353, 94.43722548566888, 96.37560540813367, 97.57085020242914, 97.97570850202429, 98.25384722774085, 98.75535604978575, 98.83482425713333, 99.02919919672676, 99.1763227697892, 99.17310108570753, 99.39754507672977, 99.33740697387213, 99.45338760081187, 99.58010717469044, 99.55540759673106, 99.55755538611884, 99.57044212244547, 99.62091517305812, 99.7100484326507]
+[0.008852198381827927, 0.0033688476883096644, 0.0034710676665265215, 0.002596142541652849, 0.0019746801885905376, 0.0020397902507216597, 0.0019213655797752447, 0.003474278717414033, 0.0037960138545755297, 0.002424723659304771, 0.0018111196005436538, 0.003020716692305504, 0.0021997825701958657, 0.0026850341315523534, 0.001516188284515136, 0.0017212183243108738, 0.0032765894997451666, 0.0017570055066657793, 0.001900090930829143, 0.001405430093425232]
+[0.009431751664587066, 0.002622302216905403, 0.0016770708745091818, 0.001121308121957173, 0.0009388168914470452, 0.0008028561283900258, 0.0005792373387913336, 0.0005356334472461545, 0.0004410687232215324, 0.00037739098254262627, 0.0003886476783259888, 0.00028882328607669826, 0.0003024774405404648, 0.0002640020064742898, 0.0001994384705461752, 0.0002212091039777624, 0.00020458618361462782, 0.00020325024652177465, 0.000182358479109442, 0.00014845219018558498]
+
