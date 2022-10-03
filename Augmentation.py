@@ -1,11 +1,54 @@
 import torch
 import torchaudio
 import random
+from torch.utils.data import Dataset, DataLoader
+from pathlib import Path
+import os
 
 
-class Augmentor():
+class AudioDataset(Dataset):
 
-    def __init__(self, audio_duration, audio_channels, audio_sampling):
+    def __init__(self, main_path, transformList=None):
+
+        self.transformList = transformList
+        self.set_audio_parameters()
+        audio_paths = []
+        for path in [str(p) for p in Path(main_path).glob('fold*')]:
+            for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
+                audio_paths.append(wav_path)
+        self.audio_paths = audio_paths
+
+    def __len__(self):
+        return len(self.audio_paths)
+
+    def __getitem__(self, idx):
+        path, filename = os.path.split(self.audio_paths[idx])
+        print(filename)
+        title, _ = os.path.splitext(filename)
+        fsID, classID, occurrenceID, sliceID = [
+            int(n) for n in title.split('-')
+        ]
+        waveform, sample_rate = self.pad_trunc(
+            self.resample(
+                self.rechannel(torchaudio.load(self.audio_paths[idx]))))
+
+        spectrogram = torchaudio.transforms.Spectrogram()
+        spectrogram_tensor = (spectrogram(waveform) + 1e-12).log2()
+
+        if self.transformList:
+            for _, transform in enumerate(self.transformList):
+                spectrogram_tensor = transform(spectrogram_tensor)
+
+        assert spectrogram_tensor.shape == torch.Size(
+            [1, 201,
+             883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
+
+        return [spectrogram_tensor, classID]
+
+    def set_audio_parameters(self,
+                             audio_duration=4000,
+                             audio_channels=1,
+                             audio_sampling=44100):
         self.audio_duration = audio_duration
         self.audio_channels = audio_channels
         self.audio_sampling = audio_sampling
