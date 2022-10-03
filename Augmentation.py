@@ -8,20 +8,16 @@ import os
 
 class AudioDataset(Dataset):
 
-    def __init__(self, main_path, transformList=None):
-
+    def __init__(self, audio_paths, transformList=None):
         self.transformList = transformList
         self.set_audio_parameters()
-        audio_paths = []
-        for path in [str(p) for p in Path(main_path).glob('fold*')]:
-            for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
-                audio_paths.append(wav_path)
         self.audio_paths = audio_paths
 
     def __len__(self):
         return len(self.audio_paths)
 
     def __getitem__(self, idx):
+        print(self.audio_paths[idx])
         path, filename = os.path.split(self.audio_paths[idx])
         title, _ = os.path.splitext(filename)
         fsID, classID, occurrenceID, sliceID = [
