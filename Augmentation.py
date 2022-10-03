@@ -23,7 +23,6 @@ class AudioDataset(Dataset):
 
     def __getitem__(self, idx):
         path, filename = os.path.split(self.audio_paths[idx])
-        print(filename)
         title, _ = os.path.splitext(filename)
         fsID, classID, occurrenceID, sliceID = [
             int(n) for n in title.split('-')
