@@ -7,6 +7,7 @@ import os
 
 
 class AudioDataset(Dataset):
+
     def __init__(self, audio_paths, transformList=None):
         self.transformList = transformList
         self.set_audio_parameters()
@@ -28,13 +29,20 @@ class AudioDataset(Dataset):
         spectrogram = torchaudio.transforms.Spectrogram()
         spectrogram_tensor = (spectrogram(waveform) + 1e-12).log2()
 
-        if self.transformList:
-            for _, transform in enumerate(self.transformList):
-                spectrogram_tensor = transform(spectrogram_tensor)
-
         assert spectrogram_tensor.shape == torch.Size(
             [1, 201,
              883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
+
+        if self.transformList:
+            data = []
+            labels = []
+            for tfm in self.transformList:
+                img_ = tfm(spectrogram_tensor)
+                data.append(img_)
+                labels.append(classID)
+            labels = torch.LongTensor(labels)
+
+            return torch.stack(data, dim=0), labels
 
         return [spectrogram_tensor, classID]
 
@@ -95,7 +103,8 @@ class AudioDataset(Dataset):
                 sig[1:, :])
             resig = torch.cat([resig, retwo])
         return ((resig, self.audio_sampling))
-    
+
+
 def getAudioPaths(main_path):
     audio_paths = []
     for path in [str(p) for p in Path(main_path).glob('fold*')]:
