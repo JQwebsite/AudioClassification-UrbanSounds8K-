@@ -7,7 +7,6 @@ import os
 
 
 class AudioDataset(Dataset):
-
     def __init__(self, audio_paths, transformList=None):
         self.transformList = transformList
         self.set_audio_parameters()
@@ -17,7 +16,6 @@ class AudioDataset(Dataset):
         return len(self.audio_paths)
 
     def __getitem__(self, idx):
-        print(self.audio_paths[idx])
         path, filename = os.path.split(self.audio_paths[idx])
         title, _ = os.path.splitext(filename)
         fsID, classID, occurrenceID, sliceID = [
@@ -97,3 +95,10 @@ class AudioDataset(Dataset):
                 sig[1:, :])
             resig = torch.cat([resig, retwo])
         return ((resig, self.audio_sampling))
+    
+def getAudioPaths(main_path):
+    audio_paths = []
+    for path in [str(p) for p in Path(main_path).glob('fold*')]:
+        for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
+            audio_paths.append(wav_path)
+    return audio_paths
