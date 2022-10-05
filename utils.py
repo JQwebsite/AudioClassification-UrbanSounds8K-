@@ -5,6 +5,7 @@ config = ConfigParser()
 config.read('config.ini')
 
 
+
 def collate(batch):
     batch = default_collate(batch)
     #assert(len(batch) == 2)

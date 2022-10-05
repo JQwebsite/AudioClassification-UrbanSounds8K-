@@ -9,7 +9,7 @@ import numpy as np
 from torch.utils.data import Dataset, DataLoader
 import utils
 import os
-import train
+import machineLearning
 from model import ResNet18
 from configparser import ConfigParser
 import matplotlib.pyplot as plt
@@ -47,8 +47,8 @@ val_dataloader = torch.utils.data.DataLoader(
 
 model = ResNet18
 
-mymodel = train.mlmodel(model, train_dataloader, val_dataloader,
-                        config['logger'])
+mymodel = machineLearning.mlmodel(model, train_dataloader, val_dataloader,
+                                  config['logger'])
 
 cost = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(),

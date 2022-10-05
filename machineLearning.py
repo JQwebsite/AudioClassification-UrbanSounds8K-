@@ -3,7 +3,7 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
 
-class mlmodel():
+class machineLearning():
 
     def __init__(self, model, trainDL, valDL, loggerConfig):
         self.device = torch.device(
@@ -93,6 +93,3 @@ class mlmodel():
             self.writer.add_scalar('2 Validate/2 Model accuracy', val_accuracy,
                                    epoch)
             self.writer.close()
-
-    def getModel(self):
-        return self.model
