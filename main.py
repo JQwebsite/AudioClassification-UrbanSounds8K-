@@ -1,5 +1,6 @@
 from pathlib import Path
 import Augmentation
+from AudioDataset import AudioDataset
 import torchaudio
 from torch.utils.data import Dataset, DataLoader
 import torch
@@ -40,7 +41,7 @@ transformList = [
 audio_train_dataset = transforms.transformData(audio_train_paths,
                                                transformList)
 
-audio_val_dataset = Augmentation.AudioDataset(audio_val_paths)
+audio_val_dataset = AudioDataset(audio_val_paths)
 
 train_dataloader = torch.utils.data.DataLoader(
     audio_train_dataset,

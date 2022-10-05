@@ -4,40 +4,12 @@ import random
 from torch.utils.data import Dataset, DataLoader
 from pathlib import Path
 import os
-from torch_audiomentations import Compose, Gain, PolarityInversion
 
 
-class AudioDataset(Dataset):
+class Augmentor():
 
-    def __init__(self, audio_paths, transformList=None, audioTransform=None):
-        self.transformList = transformList
-        self.audioTransform = audioTransform
+    def __init__(self):
         self.set_audio_parameters()
-        self.audio_paths = audio_paths
-
-    def __len__(self):
-        return len(self.audio_paths)
-
-    def __getitem__(self, idx):
-        path, filename = os.path.split(self.audio_paths[idx])
-        title, _ = os.path.splitext(filename)
-        fsID, classID, occurrenceID, sliceID = [
-            int(n) for n in title.split('-')
-        ]
-        waveform, sample_rate = self.pad_trunc(
-            self.resample(
-                self.rechannel(torchaudio.load(self.audio_paths[idx]))))
-        spectrogram = torchaudio.transforms.Spectrogram()
-        spectrogram_tensor = (spectrogram(waveform) + 1e-12).log2()
-
-        assert spectrogram_tensor.shape == torch.Size(
-            [1, 201,
-             883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
-        if self.transformList:
-            for transform in self.transformList:
-                spectrogram_tensor = transform(spectrogram_tensor)
-
-        return [spectrogram_tensor, classID]
 
     def set_audio_parameters(self,
                              audio_duration=4000,
