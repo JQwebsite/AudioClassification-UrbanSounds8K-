@@ -4,12 +4,14 @@ import random
 from torch.utils.data import Dataset, DataLoader
 from pathlib import Path
 import os
+from torch_audiomentations import Compose, Gain, PolarityInversion
 
 
 class AudioDataset(Dataset):
 
-    def __init__(self, audio_paths, transformList=None):
+    def __init__(self, audio_paths, transformList=None, audioTransform=None):
         self.transformList = transformList
+        self.audioTransform = audioTransform
         self.set_audio_parameters()
         self.audio_paths = audio_paths
 
@@ -25,24 +27,15 @@ class AudioDataset(Dataset):
         waveform, sample_rate = self.pad_trunc(
             self.resample(
                 self.rechannel(torchaudio.load(self.audio_paths[idx]))))
-
         spectrogram = torchaudio.transforms.Spectrogram()
         spectrogram_tensor = (spectrogram(waveform) + 1e-12).log2()
 
         assert spectrogram_tensor.shape == torch.Size(
             [1, 201,
              883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
-
         if self.transformList:
-            data = [spectrogram_tensor]
-            labels = [classID]
-            for tfm in self.transformList:
-                img_ = tfm(spectrogram_tensor)
-                data.append(img_)
-                labels.append(classID)
-            labels = torch.LongTensor(labels)
-
-            return torch.stack(data, dim=0), labels
+            for transform in self.transformList:
+                spectrogram_tensor = transform(spectrogram_tensor)
 
         return [spectrogram_tensor, classID]
 
@@ -102,7 +95,7 @@ class AudioDataset(Dataset):
             retwo = torchaudio.transforms.Resample(sr, self.audio_sampling)(
                 sig[1:, :])
             resig = torch.cat([resig, retwo])
-        return ((resig, self.audio_sampling))
+        return ((resig, self.audio_sampling))   
 
 
 def getAudioPaths(main_path):

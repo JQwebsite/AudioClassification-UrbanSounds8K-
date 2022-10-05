@@ -12,14 +12,17 @@ class machineLearning():
         self.trainDL = trainDL
         self.valDL = valDL
         self.loggerConfig = loggerConfig
+        self.title = loggerConfig['title'] if loggerConfig[
+            'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
         if int(loggerConfig['master_logger']):
-            title = loggerConfig['title'] if loggerConfig[
-                'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
-            self.writer = SummaryWriter(f'./logs/{title}')
+            self.writer = SummaryWriter(f'./logs/{self.title}')
             self.writer.close()
 
     def getDevice(self):
         return next(self.model.parameters()).device
+
+    def saveModel(self):
+        torch.save(self.model.state_dict(), f'saved_model/{self.title}')
 
     def write_tb_graph(self, dataloader):
         if int(self.loggerConfig['log_graph']) and int(
