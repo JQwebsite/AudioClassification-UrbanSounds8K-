@@ -34,8 +34,8 @@ class AudioDataset(Dataset):
              883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
 
         if self.transformList:
-            data = []
-            labels = []
+            data = [spectrogram_tensor]
+            labels = [classID]
             for tfm in self.transformList:
                 img_ = tfm(spectrogram_tensor)
                 data.append(img_)

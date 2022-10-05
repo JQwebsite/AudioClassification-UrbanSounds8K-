@@ -1,34 +1,39 @@
 import torch
 from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
 
 
 class mlmodel():
-    def __init__(self, model, trainDL, valDL, tbLoggingTitle=False):
+
+    def __init__(self, model, trainDL, valDL, loggerConfig):
         self.device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu")
         self.model = model.to(self.device)
-        self.tbLoggingTitle = tbLoggingTitle
         self.trainDL = trainDL
         self.valDL = valDL
-        if tbLoggingTitle:
-            self.writer = SummaryWriter(f'./logs/{tbLoggingTitle}')
+        self.loggerConfig = loggerConfig
+        if int(loggerConfig['master_logger']):
+            title = loggerConfig['title'] if loggerConfig[
+                'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
+            self.writer = SummaryWriter(f'./logs/{title}')
             self.writer.close()
 
     def getDevice(self):
         return next(self.model.parameters()).device
 
     def write_tb_graph(self, dataloader):
-        assert self.tbLoggingTitle != False
-        spec, label = next(iter(dataloader))
-        self.writer.add_graph(self.model, spec.to(self.device))
-        self.writer.close()
+        if int(self.loggerConfig['log_graph']) and int(
+                self.loggerConfig['master_logger']):
+            spec, label = next(iter(dataloader))
+            self.writer.add_graph(self.model, spec.to(self.device))
+            self.writer.close()
 
     def train(self, cost, optimizer):
         dataloader = self.trainDL
-        train_size = len(dataloader.dataset)
         batch_size = len(next(iter(dataloader))[1])
         total_batch = len(dataloader)
         train_loss, train_accuracy = 0, 0
+        train_size = batch_size * total_batch
 
         self.model.train()
 
@@ -43,7 +48,6 @@ class mlmodel():
             train_loss += batch_loss.item()
             train_accuracy += batch_accuracy.item()
             if batch % 100 == 0:
-
                 print(
                     f"Training batch {batch}/{total_batch} -> Loss: {batch_loss.item()}  Accuracy: {batch_accuracy.item()/batch_size*100}%"
                 )
@@ -79,7 +83,8 @@ class mlmodel():
 
     def tensorBoardLogging(self, train_loss, train_accuracy, val_loss,
                            val_accuracy, epoch):
-        if self.tbLoggingTitle:
+        if self.loggerConfig['log_iter_params'] and int(
+                self.loggerConfig['master_logger']):
             self.writer.add_scalar('1 Training/1 Model loss', train_loss,
                                    epoch)
             self.writer.add_scalar('1 Training/2 Model accuracy',

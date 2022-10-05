@@ -7,16 +7,17 @@ import torch.nn as nn
 from torchvision import datasets
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
-from datetime import datetime
+import utils
 import os
 import train
 from model import ResNet18
 from configparser import ConfigParser
+import matplotlib.pyplot as plt
 
 config = ConfigParser()
 config.read('config.ini')
 
-audio_paths = Augmentation.getAudioPaths('./data/')[0:100]
+audio_paths = Augmentation.getAudioPaths('./data/')[0:10]
 
 test_len = int(int(config['data']['train_percent']) / 100 * len(audio_paths))
 audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -27,28 +28,15 @@ audio_train_dataset = Augmentation.AudioDataset(
     transformList=[
         torchaudio.transforms.TimeMasking(time_mask_param=80),
         torchaudio.transforms.FrequencyMasking(freq_mask_param=80),
-    ])
+    ] if int(config['data']['augment_data']) else None)
 
 audio_val_dataset = Augmentation.AudioDataset(audio_val_paths)
-
-from torch.utils.data.dataloader import default_collate
-
-
-def myCollate(batch):
-    batch = default_collate(batch)
-    #assert(len(batch) == 2)
-    batch_size, num_aug, channels, height, width = batch[0].size()
-    batch[0] = batch[0].view([batch_size * num_aug, channels, height, width])
-    batch[1] = batch[1].view([batch_size * num_aug])
-    idx = torch.randperm(batch_size)
-    return batch
-
 
 train_dataloader = torch.utils.data.DataLoader(audio_train_dataset,
                                                batch_size=4,
                                                num_workers=0,
                                                shuffle=True,
-                                               collate_fn=myCollate)
+                                               collate_fn=utils.collate)
 
 val_dataloader = torch.utils.data.DataLoader(
     audio_val_dataset,
@@ -59,10 +47,8 @@ val_dataloader = torch.utils.data.DataLoader(
 
 model = ResNet18
 
-title = datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
-title = False
-
-mymodel = train.mlmodel(model, train_dataloader, val_dataloader, title)
+mymodel = train.mlmodel(model, train_dataloader, val_dataloader,
+                        config['logger'])
 
 cost = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(),
