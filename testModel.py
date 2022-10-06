@@ -10,10 +10,12 @@ from torch.utils.data import Dataset, DataLoader
 import utils
 import os
 import transforms
-from machineLearning import machineLearning
+import machineLearning
 from model import ResNet18
 from configparser import ConfigParser
 import matplotlib.pyplot as plt
+from AudioDataset import AudioDataset
+import Augmentation
 
 
 def predict(model, input, target, class_mapping):
@@ -29,16 +31,11 @@ def predict(model, input, target, class_mapping):
 if __name__ == "__main__":
     # load back the model
     cnn = ResNet18
-    # state_dict = torch.load("saved_model/soundclassifier.pth")
-    # cnn.load_state_dict(state_dict)
+    state_dict = torch.load("saved_model/cnn.pth")
+    cnn.load_state_dict(state_dict)
     # load urban sound dataset
-    mel_spectrogram = torchaudio.transforms.Spectrogram(
-        sample_rate=SAMPLE_RATE, n_fft=1024, hop_length=512, n_mels=64)
-    usd = UrbanSoundDataset(ANNOTATIONS_FILE, AUDIO_DIR, mel_spectrogram,
-                            SAMPLE_RATE, NUM_SAMPLES, "cpu")
+    audio_paths = Augmentation.getAudioPaths_test('./data/')
     # get a sample from the us dataset for inference
-    input, target = usd[0][0], usd[0][1]  # [num_cha, fr, t]
-    input.unsqueeze_(0)
-    # make an inference
-    predicted, expected = predict(cnn, input, target, class_mapping)
-    print(f"Predicted: '{predicted}', expected: '{expected}'")
+    audio_val_dataset = AudioDataset(audio_paths)
+    X, y = audio_val_dataset[0]
+    

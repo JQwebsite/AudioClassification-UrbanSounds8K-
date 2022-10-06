@@ -67,12 +67,20 @@ class Augmentor():
             retwo = torchaudio.transforms.Resample(sr, self.audio_sampling)(
                 sig[1:, :])
             resig = torch.cat([resig, retwo])
-        return ((resig, self.audio_sampling))   
+        return ((resig, self.audio_sampling))
 
 
 def getAudioPaths(main_path):
     audio_paths = []
     for path in [str(p) for p in Path(main_path).glob('fold*')]:
+        for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
+            audio_paths.append(wav_path)
+    return audio_paths
+
+
+def getAudioPaths_test(main_path):
+    audio_paths = []
+    for path in [str(p) for p in Path(main_path).glob('testset')]:
         for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
             audio_paths.append(wav_path)
     return audio_paths

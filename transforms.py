@@ -1,16 +1,20 @@
 from AudioDataset import AudioDataset
+
 import torchaudio
+
 import torch
 
 
 def transformData(audio_paths, transformParams):
 
     transformedDataset = AudioDataset(audio_paths)
+    print(transformParams)
+    for transformAudio, transformSpec in transformParams:
 
-    # if int(config['data']['augment_data']):
-    for transforms in transformParams:
         audio_train_dataset = AudioDataset(audio_paths,
-                                           transformList=transforms)
+                                           specTransformList=transformSpec,
+                                           audioTransformList=transformAudio)
+
         transformedDataset = torch.utils.data.ConcatDataset(
             [transformedDataset, audio_train_dataset])
 
