@@ -1,28 +1,24 @@
 from pathlib import Path
 import Augmentation
-from AudioDataset import AudioDataset
+from AudioDataset import transformData
 import torchaudio
 from torch.utils.data import Dataset, DataLoader
 import torch
 import torch.nn as nn
-from torchvision import datasets
-import numpy as np
-from torch.utils.data import Dataset, DataLoader
-import utils
 import os
-import transforms
 import machineLearning
 from model import ResNet18, CNNNetwork, M5
 from configparser import ConfigParser
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
-from audiomentations import AddGaussianNoise, TimeStretch, PitchShift, Shift
+from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
 
-    audio_paths = Augmentation.getAudioPaths('./data/')[0:10]
+    audio_paths = Augmentation.getAudioPaths('./data/')
+
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -34,7 +30,7 @@ if __name__ == '__main__':
                 AddGaussianNoise(min_amplitude=0.001,
                                  max_amplitude=0.015,
                                  p=0.5),
-                TimeStretch(min_rate=0.8, max_rate=1.25, p=0.5),
+                TimeStretch(min_rate=0.9, max_rate=1.1, p=0.5),
                 PitchShift(min_semitones=-4, max_semitones=4, p=0.5),
                 Shift(min_fraction=-0.5, max_fraction=0.5, p=0.5),
             ],
@@ -49,10 +45,9 @@ if __name__ == '__main__':
         },
     ]
 
-    audio_train_dataset = transforms.transformData(audio_train_paths,
-                                                   transformList)
+    audio_train_dataset = transformData(audio_train_paths, transformList)
 
-    audio_val_dataset = AudioDataset(audio_val_paths)
+    audio_val_dataset = transformData(audio_val_paths)
 
     print(
         f'Train dataset Length: {len(audio_train_dataset)} ({len(audio_train_paths)} before augmentation)'
@@ -71,6 +66,7 @@ if __name__ == '__main__':
         batch_size=int(config['model']['batch_size']),
         num_workers=4,
         shuffle=True)
+
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

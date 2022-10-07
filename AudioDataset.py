@@ -9,8 +9,23 @@ import os
 
 from Augmentation import Augmentor
 from audiomentations import Compose
-
 import numpy as np
+
+
+def transformData(audio_paths, transformParams=None):
+    # outputs original waveform + transformParams
+    transformedDataset = AudioDataset(audio_paths)
+    if transformParams:
+        for transform in transformParams:
+            audio_train_dataset = AudioDataset(
+                audio_paths,
+                specTransformList=transform['spectrogram'],
+                audioTransformList=transform['audio'])
+
+            transformedDataset = torch.utils.data.ConcatDataset(
+                [transformedDataset, audio_train_dataset])
+
+    return transformedDataset
 
 
 class AudioDataset(Dataset):
@@ -42,15 +57,16 @@ class AudioDataset(Dataset):
             int(n) for n in title.split('-')
         ]
 
-        waveform, sample_rate = self.Augmentor.pad_trunc(
-            self.Augmentor.resample(
-                self.Augmentor.rechannel(torchaudio.load(
-                    self.audio_paths[idx]))))
+        waveform, sample_rate = self.Augmentor.audio_preprocessing(
+            torchaudio.load(self.audio_paths[idx]))
 
         if self.audioAugment:
             waveform = self.audioAugment(waveform.numpy(), 44100)
             if not torch.is_tensor(waveform):
                 waveform = torch.from_numpy(waveform)
+
+        waveform, sample_rate = self.Augmentor.pad_trunc(
+            [waveform, sample_rate])
 
         spectrogram = torchaudio.transforms.Spectrogram()
 

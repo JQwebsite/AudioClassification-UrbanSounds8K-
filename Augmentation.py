@@ -2,6 +2,7 @@ import torch
 import torchaudio
 import random
 from torch.utils.data import Dataset, DataLoader
+from configparser import ConfigParser
 from pathlib import Path
 import os
 
@@ -9,15 +10,14 @@ import os
 class Augmentor():
 
     def __init__(self):
-        self.set_audio_parameters()
+        config = ConfigParser()
+        config.read('config.ini')
+        self.audio_duration = int(config['augmentations']['duration'])
+        self.audio_channels = int(config['augmentations']['num_channels'])
+        self.audio_sampling = int(config['augmentations']['sample_rate'])
 
-    def set_audio_parameters(self,
-                             audio_duration=4000,
-                             audio_channels=1,
-                             audio_sampling=44100):
-        self.audio_duration = audio_duration
-        self.audio_channels = audio_channels
-        self.audio_sampling = audio_sampling
+    def audio_preprocessing(self, audioIn):
+        return self.resample(self.rechannel(audioIn))
 
     def pad_trunc(self, aud):
         sig, sr = aud
@@ -36,7 +36,6 @@ class Augmentor():
             # Pad with 0s
             pad_begin = torch.zeros((num_rows, pad_begin_len))
             pad_end = torch.zeros((num_rows, pad_end_len))
-
             sig = torch.cat((pad_begin, sig, pad_end), 1)
         return (sig, sr)
 
@@ -78,9 +77,8 @@ def getAudioPaths(main_path):
     return audio_paths
 
 
-def getAudioPaths_test(main_path):
-    audio_paths = []
-    for path in [str(p) for p in Path(main_path).glob('testset')]:
-        for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
-            audio_paths.append(wav_path)
-    return audio_paths
+def getAudio(path):
+    wav_paths = []
+    for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
+        wav_paths.append(wav_path)
+    return wav_paths
