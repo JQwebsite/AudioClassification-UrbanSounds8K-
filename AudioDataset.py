@@ -74,7 +74,7 @@ class AudioDataset(Dataset):
 
         assert spectrogram_tensor.shape == torch.Size(
             [1, 201,
-             883]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
+             1103]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
 
         if self.specTransformList:
 

@@ -19,6 +19,7 @@ if __name__ == '__main__':
 
     audio_paths = Augmentation.getAudioPaths('./data/')
 
+
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -30,7 +31,10 @@ if __name__ == '__main__':
                 AddGaussianNoise(min_amplitude=0.001,
                                  max_amplitude=0.015,
                                  p=0.5),
-                TimeStretch(min_rate=0.9, max_rate=1.1, p=0.5),
+                TimeStretch(min_rate=0.8,
+                            max_rate=1.2,
+                            p=0.5,
+                            leave_length_unchanged=False),
                 PitchShift(min_semitones=-4, max_semitones=4, p=0.5),
                 Shift(min_fraction=-0.5, max_fraction=0.5, p=0.5),
             ],
@@ -57,7 +61,7 @@ if __name__ == '__main__':
     train_dataloader = torch.utils.data.DataLoader(
         audio_train_dataset,
         batch_size=int(config['model']['batch_size']),
-        num_workers=0,
+        num_workers=4,
         shuffle=True,
     )
 
@@ -66,7 +70,6 @@ if __name__ == '__main__':
         batch_size=int(config['model']['batch_size']),
         num_workers=4,
         shuffle=True)
-
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
