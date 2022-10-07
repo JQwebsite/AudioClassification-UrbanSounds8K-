@@ -14,31 +14,39 @@ import transforms
 import machineLearning
 from model import ResNet18, CNNNetwork, M5
 from configparser import ConfigParser
-import matplotlib.pyplot as plt
-from datetime import datetime
 from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
+from audiomentations import AddGaussianNoise, TimeStretch, PitchShift, Shift
 
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
 
-    audio_paths = Augmentation.getAudioPaths('./data/')
-
+    audio_paths = Augmentation.getAudioPaths('./data/')[0:10]
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
         test_len:]
 
     transformList = [
-        [[torchaudio.transforms.Vol(1.1)], []],
-        [[torchaudio.transforms.Vol(0.9)], []],
-        [[], [torchaudio.transforms.TimeMasking(50)]],
-        [[], [torchaudio.transforms.FrequencyMasking(50)]],
-        [[],
-         [
-             torchaudio.transforms.TimeMasking(80),
-             torchaudio.transforms.FrequencyMasking(80)
-         ]],
+        {
+            "audio": [
+                AddGaussianNoise(min_amplitude=0.001,
+                                 max_amplitude=0.015,
+                                 p=0.5),
+                TimeStretch(min_rate=0.8, max_rate=1.25, p=0.5),
+                PitchShift(min_semitones=-4, max_semitones=4, p=0.5),
+                Shift(min_fraction=-0.5, max_fraction=0.5, p=0.5),
+            ],
+            "spectrogram": []
+        },
+        {
+            "audio": [],
+            "spectrogram": [
+                torchaudio.transforms.TimeMasking(80),
+                torchaudio.transforms.FrequencyMasking(80)
+            ],
+        },
     ]
 
     audio_train_dataset = transforms.transformData(audio_train_paths,
@@ -46,11 +54,17 @@ if __name__ == '__main__':
 
     audio_val_dataset = AudioDataset(audio_val_paths)
 
+    print(
+        f'Train dataset Length: {len(audio_train_dataset)} ({len(audio_train_paths)} before augmentation)'
+    )
+    print(f'Validation dataset Length: {len(audio_val_dataset)}')
+
     train_dataloader = torch.utils.data.DataLoader(
         audio_train_dataset,
         batch_size=int(config['model']['batch_size']),
-        num_workers=4,
-        shuffle=True)
+        num_workers=0,
+        shuffle=True,
+    )
 
     val_dataloader = torch.utils.data.DataLoader(
         audio_val_dataset,
@@ -69,6 +83,7 @@ if __name__ == '__main__':
     epochs = int(config['model']['num_epochs'])
     title = config['logger']['title'] if config['logger'][
         'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
+
     if int(config['logger']['master_logger']):
 
         writer = SummaryWriter(f'./logs/{title}')

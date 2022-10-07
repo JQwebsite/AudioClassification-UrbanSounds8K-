@@ -8,6 +8,9 @@ from pathlib import Path
 import os
 
 from Augmentation import Augmentor
+from audiomentations import Compose
+
+import numpy as np
 
 
 class AudioDataset(Dataset):
@@ -19,7 +22,8 @@ class AudioDataset(Dataset):
 
         self.specTransformList = specTransformList
 
-        self.audioTransformList = audioTransformList
+        self.audioAugment = Compose(
+            audioTransformList) if audioTransformList else None
 
         self.audio_paths = audio_paths
 
@@ -43,11 +47,10 @@ class AudioDataset(Dataset):
                 self.Augmentor.rechannel(torchaudio.load(
                     self.audio_paths[idx]))))
 
-        if self.audioTransformList:
-
-            for transform in self.audioTransformList:
-
-                waveform = transform(waveform)
+        if self.audioAugment:
+            waveform = self.audioAugment(waveform.numpy(), 44100)
+            if not torch.is_tensor(waveform):
+                waveform = torch.from_numpy(waveform)
 
         spectrogram = torchaudio.transforms.Spectrogram()
 
