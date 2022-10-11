@@ -6,18 +6,19 @@ from configparser import ConfigParser
 from pathlib import Path
 import os
 
+config = ConfigParser()
+config.read('config.ini')
 
 class Augmentor():
+    audio_duration = int(config['augmentations']['duration'])
+    audio_channels = int(config['augmentations']['num_channels'])
+    audio_sampling = int(config['augmentations']['sample_rate'])
 
     def __init__(self):
-        config = ConfigParser()
-        config.read('config.ini')
-        self.audio_duration = int(config['augmentations']['duration'])
-        self.audio_channels = int(config['augmentations']['num_channels'])
-        self.audio_sampling = int(config['augmentations']['sample_rate'])
+        pass
 
     def audio_preprocessing(self, audioIn):
-        return self.resample(self.rechannel(audioIn))
+        return self.__resample(self.__rechannel(audioIn))
 
     def pad_trunc(self, aud):
         sig, sr = aud
@@ -39,7 +40,7 @@ class Augmentor():
             sig = torch.cat((pad_begin, sig, pad_end), 1)
         return (sig, sr)
 
-    def rechannel(self, aud):
+    def __rechannel(self, aud):
         sig, sr = aud
         if (sig.shape[0] == self.audio_channels):
             # Nothing to do
@@ -52,7 +53,7 @@ class Augmentor():
             resig = torch.cat([sig, sig])
         return ((resig, sr))
 
-    def resample(self, aud):
+    def __resample(self, aud):
         sig, sr = aud
         if (sr == self.audio_sampling):
             # Nothing to do

@@ -19,7 +19,6 @@ if __name__ == '__main__':
 
     audio_paths = Augmentation.getAudioPaths('./data/')
 
-
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -61,14 +60,14 @@ if __name__ == '__main__':
     train_dataloader = torch.utils.data.DataLoader(
         audio_train_dataset,
         batch_size=int(config['model']['batch_size']),
-        num_workers=4,
+        num_workers=int(config['model']['num_workers']),
         shuffle=True,
     )
 
     val_dataloader = torch.utils.data.DataLoader(
         audio_val_dataset,
         batch_size=int(config['model']['batch_size']),
-        num_workers=4,
+        num_workers=int(config['model']['num_workers']),
         shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -83,7 +82,7 @@ if __name__ == '__main__':
     title = config['logger']['title'] if config['logger'][
         'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
 
-    if int(config['logger']['master_logger']):
+    if config['logger'].getboolean('master_logger'):
 
         writer = SummaryWriter(f'./logs/{title}')
         writer.close()

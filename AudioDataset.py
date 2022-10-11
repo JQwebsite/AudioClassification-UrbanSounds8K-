@@ -13,7 +13,12 @@ import numpy as np
 
 
 def transformData(audio_paths, transformParams=None):
-    # outputs original waveform + transformParams
+    """
+    Outputs spectrogram in addition to any transforms indicated in transformParams (dictionary)
+    
+    audio_paths: List of .wav paths for dataloader
+    transformParams: List of dictionary with keys audio and spectrogram
+    """
     transformedDataset = AudioDataset(audio_paths)
     if transformParams:
         for transform in transformParams:
