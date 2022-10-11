@@ -11,12 +11,12 @@ config.read('config.ini')
 
 
 class Augmentor():
+    """
+    Basic augmentation to ensure uniformaty among the different audio files.
+    """
     audio_duration = int(config['augmentations']['duration'])
     audio_channels = int(config['augmentations']['num_channels'])
     audio_sampling = int(config['augmentations']['sample_rate'])
-
-    def __init__(self):
-        pass
 
     def audio_preprocessing(self, audioIn):
         return self.__resample(self.__rechannel(audioIn))
