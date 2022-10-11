@@ -13,12 +13,12 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
-
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
 
-    audio_paths = Augmentation.getAudioPaths('./data/')
+    # Get Audio paths for dataset
+    audio_paths = Augmentation.getAudioPaths('./data/')[0:100]
 
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
@@ -49,6 +49,7 @@ if __name__ == '__main__':
         },
     ]
 
+    # create dataset with transforms (as required)
     audio_train_dataset = transformData(audio_train_paths, transformList)
 
     audio_val_dataset = transformData(audio_val_paths)
@@ -58,6 +59,7 @@ if __name__ == '__main__':
     )
     print(f'Validation dataset Length: {len(audio_val_dataset)}')
 
+    # create datalaoder for model
     train_dataloader = torch.utils.data.DataLoader(
         audio_train_dataset,
         batch_size=int(config['model']['batch_size']),
@@ -71,36 +73,44 @@ if __name__ == '__main__':
         num_workers=int(config['model']['num_workers']),
         shuffle=True)
 
+    # create model and parameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model = ResNet18.to(device)
 
-    # set model parameters
     cost = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=float(config['model']['learning_rate']))
     epochs = int(config['model']['num_epochs'])
 
-    title = config['logger']['title'] if config['logger'][
+    title = config['model']['title'] if config['model'][
         'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
 
+    # TensorBoard logging (as required)
     if config['logger'].getboolean('master_logger'):
         writer = SummaryWriter(f'./logs/{title}')
+        if config['logger'].getboolean('log_graph'):
+            spec, label = next(iter(train_dataloader))
+            writer.add_graph(model, spec.to(device))
         writer.close()
+    else:
+        for i in config['logger']:
+            config['logger'][i] = 'false'
 
+# train model
     for epoch in range(epochs):
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
-            model, train_dataloader, cost, optimizer, device)
+            model, train_dataloader, cost, optimizer, device, writer)
         val_loss, val_accuracy = machineLearning.val(model, val_dataloader,
                                                      cost, device)
-        print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
-        print(f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
-        if int(config['logger']['log_iter_params']) and int(
-                config['logger']['master_logger']):
+        if config['logger'].getboolean('log_iter_params'):
             machineLearning.tensorBoardLogging(writer, train_loss,
                                                train_accuracy, val_loss,
-                                               val_accuracy, epoch,
-                                               config['logger'])
+                                               val_accuracy, epoch)
+        else:
+            print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
+            print(
+                f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
 
     torch.save(model.state_dict, f'saved_model/{title}.pt')
