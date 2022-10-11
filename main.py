@@ -13,6 +13,7 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
 
+
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
@@ -74,16 +75,16 @@ if __name__ == '__main__':
 
     model = ResNet18.to(device)
 
+    # set model parameters
     cost = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=float(config['model']['learning_rate']))
-
     epochs = int(config['model']['num_epochs'])
+
     title = config['logger']['title'] if config['logger'][
         'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
 
     if config['logger'].getboolean('master_logger'):
-
         writer = SummaryWriter(f'./logs/{title}')
         writer.close()
 

@@ -1,8 +1,9 @@
 import torch
+from tqdm import tqdm
 
 
-def write_tb_graph(writer, model, dataloader, loggerConfig):
-    if int(loggerConfig['log_graph']) and int(loggerConfig['master_logger']):
+def write_tb_graph(writer, model, dataloader):
+    
         spec, label = next(iter(dataloader))
         writer.add_graph(model, spec.to(device))
         writer.close()
@@ -14,7 +15,7 @@ def train(model, dataloader, cost, optimizer, device):
     train_loss, train_accuracy = 0, 0
     train_size = batch_size * total_batch
     model.train()
-    for batch, (X, Y) in enumerate(dataloader):
+    for batch, (X, Y) in tqdm(enumerate(dataloader)):
         X, Y = X.to(device), Y.to(device)
         optimizer.zero_grad()
         pred = model(X)
@@ -24,9 +25,9 @@ def train(model, dataloader, cost, optimizer, device):
         batch_accuracy = (pred.argmax(1) == Y).type(torch.float).sum()
         train_loss += batch_loss.item()
         train_accuracy += batch_accuracy.item()
-        if batch % 100 == 0:
+        if batch % 5 == 0:
             print(
-                f"Training batch {batch}/{total_batch} -> Loss: {batch_loss.item()}  Accuracy: {batch_accuracy.item()/batch_size*100}%"
+                f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy.item()/batch_size*100}%"
             )
     train_loss /= train_size
     train_accuracy /= train_size / 100

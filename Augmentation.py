@@ -9,6 +9,7 @@ import os
 config = ConfigParser()
 config.read('config.ini')
 
+
 class Augmentor():
     audio_duration = int(config['augmentations']['duration'])
     audio_channels = int(config['augmentations']['num_channels'])
@@ -83,3 +84,8 @@ def getAudio(path):
     for wav_path in [str(p) for p in Path(path).glob(f'*.wav')]:
         wav_paths.append(wav_path)
     return wav_paths
+
+
+if __name__ == '__main__':
+    paths = getAudioPaths('data')
+    print(paths)
