@@ -18,8 +18,7 @@ if __name__ == '__main__':
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data/')[0:2]
-
+    audio_paths = Augmentation.getAudioPaths('./data/')
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -53,7 +52,6 @@ if __name__ == '__main__':
             ],
         },
     ]
-
     # create dataset with transforms (as required)
     audio_train_dataset = transformData(audio_train_paths, transformList)
 

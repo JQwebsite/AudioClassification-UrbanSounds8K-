@@ -1,5 +1,8 @@
 import torch
 from tqdm import tqdm
+import torchmetrics
+
+acc_metric = torchmetrics.Accuracy()
 
 
 def train(model, dataloader, cost, optimizer, device):
@@ -9,22 +12,22 @@ def train(model, dataloader, cost, optimizer, device):
     train_size = batch_size * total_batch
     model.train()
     print(f'Total train batch: {total_batch}')
-    for batch, (X, Y) in tqdm(enumerate(dataloader)):
+    for batch, (X, Y) in tqdm(enumerate(dataloader), unit='batch'):
         X, Y = X.to(device), Y.to(device)
         optimizer.zero_grad()
         pred = model(X)
         batch_loss = cost(pred, Y)
+        batch_accuracy = acc_metric(pred, Y)
         batch_loss.backward()
         optimizer.step()
-        batch_accuracy = (pred.argmax(1) == Y).type(torch.float).sum()
         train_loss += batch_loss.item()
         train_accuracy += batch_accuracy.item()
         if batch % 5 == 0:
             print(
-                f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy.item()/batch_size*100}%"
-            )
+                f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%")
     train_loss /= train_size
-    train_accuracy /= train_size / 100
+    train_accuracy = acc_metric.compute()
+    acc_metric.reset()
     return (train_loss, train_accuracy)
 
 
@@ -36,19 +39,19 @@ def val(model, dataloader, cost, device):
     model.eval()
     print(f'Total eval batch: {total_batch}')
     with torch.no_grad():
-        for batch, (X, Y) in tqdm(enumerate(dataloader)):
+        for batch, (X, Y) in tqdm(enumerate(dataloader), unit='batch'):
             X, Y = X.to(device), Y.to(device)
             pred = model(X)
             batch_loss = cost(pred, Y)
-            batch_accuracy = (pred.argmax(1) == Y).type(torch.float).sum()
+            batch_accuracy = acc_metric(pred, Y)
             val_loss += batch_loss.item()
-            val_accuracy += batch_accuracy.item()
             if batch % 10 == 0:
                 print(
-                    f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy.item()/batch_size*100}%"
+                    f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%"
                 )
     val_loss /= val_size
-    val_accuracy /= val_size / 100
+    val_accuracy = acc_metric.compute()
+    acc_metric.reset()
     return (val_loss, val_accuracy)
 
 
