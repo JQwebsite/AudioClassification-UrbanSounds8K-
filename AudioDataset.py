@@ -24,8 +24,11 @@ def transformData(audio_paths, transformParams=None):
         for transform in transformParams:
             audio_train_dataset = AudioDataset(
                 audio_paths,
-                specTransformList=transform['spectrogram'],
-                audioTransformList=transform['audio'])
+                specTransformList=transform['spectrogram']
+                if 'spectrogram' in transform else [],
+                audioTransformList=transform['audio']
+                if 'audio' in transform else [],
+            )
 
             transformedDataset = torch.utils.data.ConcatDataset(
                 [transformedDataset, audio_train_dataset])

@@ -2,7 +2,7 @@ import torch
 from tqdm import tqdm
 
 
-def train(model, dataloader, cost, optimizer, device, tbLogging):
+def train(model, dataloader, cost, optimizer, device):
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
     train_loss, train_accuracy = 0, 0
@@ -28,7 +28,7 @@ def train(model, dataloader, cost, optimizer, device, tbLogging):
     return (train_loss, train_accuracy)
 
 
-def val(model, dataloader, cost, device, tbLogging):
+def val(model, dataloader, cost, device):
     val_size = len(dataloader.dataset)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)

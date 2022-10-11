@@ -11,14 +11,14 @@ from model import ResNet18, CNNNetwork, M5
 from configparser import ConfigParser
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
-from audiomentations import Compose, AddGaussianNoise, TimeStretch, PitchShift, Shift
+import audiomentations
 
 if __name__ == '__main__':
     config = ConfigParser()
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data/')[0:100]
+    audio_paths = Augmentation.getAudioPaths('./data/')[0:2]
 
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
@@ -28,20 +28,25 @@ if __name__ == '__main__':
     transformList = [
         {
             "audio": [
-                AddGaussianNoise(min_amplitude=0.001,
-                                 max_amplitude=0.015,
-                                 p=0.5),
-                TimeStretch(min_rate=0.8,
-                            max_rate=1.2,
-                            p=0.5,
-                            leave_length_unchanged=False),
-                PitchShift(min_semitones=-4, max_semitones=4, p=0.5),
-                Shift(min_fraction=-0.5, max_fraction=0.5, p=0.5),
+                audiomentations.AddGaussianNoise(min_amplitude=0.001,
+                                                 max_amplitude=0.015,
+                                                 p=0.5),
+                audiomentations.TimeStretch(min_rate=0.8,
+                                            max_rate=1.2,
+                                            p=0.5,
+                                            leave_length_unchanged=False),
+                audiomentations.PitchShift(min_semitones=-4,
+                                           max_semitones=4,
+                                           p=0.5),
+                audiomentations.Shift(min_fraction=-0.5,
+                                      max_fraction=0.5,
+                                      p=0.5),
             ],
-            "spectrogram": []
         },
         {
-            "audio": [],
+            "audio": [audiomentations.RoomSimulator()]
+        },
+        {
             "spectrogram": [
                 torchaudio.transforms.TimeMasking(80),
                 torchaudio.transforms.FrequencyMasking(80)
@@ -101,7 +106,7 @@ if __name__ == '__main__':
     for epoch in range(epochs):
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
-            model, train_dataloader, cost, optimizer, device, writer)
+            model, train_dataloader, cost, optimizer, device)
         val_loss, val_accuracy = machineLearning.val(model, val_dataloader,
                                                      cost, device)
         if config['logger'].getboolean('log_iter_params'):
