@@ -16,7 +16,7 @@ def transformData(audio_paths, transformParams=None):
     """
     Outputs spectrogram in addition to any transforms indicated in transformParams (dictionary)
     
-    audio_paths: List of .wav paths for dataloader
+    audio_paths: List of .wav paths for dataset
     transformParams: List of dictionary with keys audio and spectrogram
     """
     transformedDataset = AudioDataset(audio_paths)
@@ -37,6 +37,12 @@ def transformData(audio_paths, transformParams=None):
 
 
 class AudioDataset(Dataset):
+    """
+    A custom dataset that fetches the audio path, load as waveform, perform augmentation audioTransformList and specTransformList and outputs the spectrogram
+    audio_paths: List of .wav paths for dataset
+    audioTransformList: audiomentations transforms
+    specTransformList: pyTorch spectrogram masking options
+    """
 
     def __init__(self,
                  audio_paths,
