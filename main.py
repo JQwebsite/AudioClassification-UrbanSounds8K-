@@ -18,39 +18,39 @@ if __name__ == '__main__':
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data/')
+    audio_paths = Augmentation.getAudioPaths('./data')
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
         test_len:]
 
     transformList = [
-        {
-            "audio": [
-                audiomentations.AddGaussianNoise(min_amplitude=0.001,
-                                                 max_amplitude=0.015,
-                                                 p=0.5),
-                audiomentations.TimeStretch(min_rate=0.8,
-                                            max_rate=1.2,
-                                            p=0.5,
-                                            leave_length_unchanged=False),
-                audiomentations.PitchShift(min_semitones=-4,
-                                           max_semitones=4,
-                                           p=0.5),
-                audiomentations.Shift(min_fraction=-0.5,
-                                      max_fraction=0.5,
-                                      p=0.5),
-            ],
-        },
-        {
-            "audio": [audiomentations.RoomSimulator()]
-        },
-        {
-            "spectrogram": [
-                torchaudio.transforms.TimeMasking(80),
-                torchaudio.transforms.FrequencyMasking(80)
-            ],
-        },
+        # {
+        #     "audio": [
+        #         audiomentations.AddGaussianNoise(min_amplitude=0.001,
+        #                                          max_amplitude=0.015,
+        #                                          p=0.5),
+        #         audiomentations.TimeStretch(min_rate=0.8,
+        #                                     max_rate=1.2,
+        #                                     p=0.5,
+        #                                     leave_length_unchanged=False),
+        #         audiomentations.PitchShift(min_semitones=-4,
+        #                                    max_semitones=4,
+        #                                    p=0.5),
+        #         audiomentations.Shift(min_fraction=-0.5,
+        #                               max_fraction=0.5,
+        #                               p=0.5),
+        #     ],
+        # },
+        # {
+        #     "audio": [audiomentations.AddGaussianNoise(),]
+        # },
+        # {
+        #     "spectrogram": [
+        #         torchaudio.transforms.TimeMasking(80),
+        #         torchaudio.transforms.FrequencyMasking(80)
+        #     ],
+        # },
     ]
     # create dataset with transforms (as required)
     audio_train_dataset = transformData(audio_train_paths, transformList)
@@ -99,7 +99,6 @@ if __name__ == '__main__':
     else:
         for i in config['logger']:
             config['logger'][i] = 'false'
-
 # train model
     for epoch in range(epochs):
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')

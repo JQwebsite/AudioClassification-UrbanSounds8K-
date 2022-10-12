@@ -2,10 +2,11 @@ import torch
 from tqdm import tqdm
 import torchmetrics
 
-acc_metric = torchmetrics.Accuracy()
+
 
 
 def train(model, dataloader, cost, optimizer, device):
+    acc_metric = torchmetrics.Accuracy().to(device)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
     train_loss, train_accuracy = 0, 0
@@ -22,16 +23,17 @@ def train(model, dataloader, cost, optimizer, device):
         optimizer.step()
         train_loss += batch_loss.item()
         train_accuracy += batch_accuracy.item()
-        if batch % 5 == 0:
+        if batch % 50 == 0:
             print(
                 f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%")
     train_loss /= train_size
-    train_accuracy = acc_metric.compute()
+    train_accuracy = acc_metric.compute() * 100
     acc_metric.reset()
     return (train_loss, train_accuracy)
 
 
 def val(model, dataloader, cost, device):
+    acc_metric = torchmetrics.Accuracy().to(device)
     val_size = len(dataloader.dataset)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
@@ -45,12 +47,12 @@ def val(model, dataloader, cost, device):
             batch_loss = cost(pred, Y)
             batch_accuracy = acc_metric(pred, Y)
             val_loss += batch_loss.item()
-            if batch % 10 == 0:
+            if batch % 100 == 0:
                 print(
                     f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%"
                 )
     val_loss /= val_size
-    val_accuracy = acc_metric.compute()
+    val_accuracy = acc_metric.compute() * 100
     acc_metric.reset()
     return (val_loss, val_accuracy)
 
