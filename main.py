@@ -25,33 +25,34 @@ if __name__ == '__main__':
         test_len:]
 
     transformList = [
-        # {
-        #     "audio": [
-        #         audiomentations.AddGaussianNoise(min_amplitude=0.001,
-        #                                          max_amplitude=0.015,
-        #                                          p=0.5),
-        #         audiomentations.TimeStretch(min_rate=0.8,
-        #                                     max_rate=1.2,
-        #                                     p=0.5,
-        #                                     leave_length_unchanged=False),
-        #         audiomentations.PitchShift(min_semitones=-4,
-        #                                    max_semitones=4,
-        #                                    p=0.5),
-        #         audiomentations.Shift(min_fraction=-0.5,
-        #                               max_fraction=0.5,
-        #                               p=0.5),
-        #     ],
-        # },
-        # {
-        #     "audio": [audiomentations.AddGaussianNoise(),]
-        # },
-        # {
-        #     "spectrogram": [
-        #         torchaudio.transforms.TimeMasking(80),
-        #         torchaudio.transforms.FrequencyMasking(80)
-        #     ],
-        # },
+        {
+            "audio": [
+                audiomentations.AddGaussianNoise(min_amplitude=0.001,
+                                                 max_amplitude=0.015,
+                                                 p=0.5),
+                audiomentations.TimeStretch(min_rate=0.8,
+                                            max_rate=1.2,
+                                            p=0.5,
+                                            leave_length_unchanged=False),
+                audiomentations.PitchShift(min_semitones=-4,
+                                           max_semitones=4,
+                                           p=0.5),
+                audiomentations.Shift(min_fraction=-0.5,
+                                      max_fraction=0.5,
+                                      p=0.5),
+            ],
+        },
+        {
+            "audio": [audiomentations.AddGaussianNoise(),]
+        },
+        {
+            "spectrogram": [
+                torchaudio.transforms.TimeMasking(80),
+                torchaudio.transforms.FrequencyMasking(80)
+            ],
+        },
     ]
+
     # create dataset with transforms (as required)
     audio_train_dataset = transformData(audio_train_paths, transformList)
 
@@ -99,7 +100,12 @@ if __name__ == '__main__':
     else:
         for i in config['logger']:
             config['logger'][i] = 'false'
-# train model
+
+    #  train model
+    train_loss_list = []
+    train_acc_list = []
+    val_loss_list =[]
+    val_acc_list = []
     for epoch in range(epochs):
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
@@ -111,8 +117,16 @@ if __name__ == '__main__':
                                                train_accuracy, val_loss,
                                                val_accuracy, epoch)
         else:
+            train_acc_list.append(train_accuracy)
+            train_loss_list.append(train_loss)
+            val_acc_list.append(val_accuracy)
+            val_loss_list.append(val_loss)
             print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
             print(
                 f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
 
     torch.save(model.state_dict, f'saved_model/{title}.pt')
+    print("trainLoss = ", train_loss_list)
+    print("trainAcc = ", train_acc_list)
+    print("valLoss = ", val_loss_list)
+    print("valAcc = ", val_acc_list)
