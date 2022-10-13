@@ -14,48 +14,51 @@ from datetime import datetime
 import audiomentations
 
 if __name__ == '__main__':
+
     config = ConfigParser()
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data')
+    audio_paths = Augmentation.getAudioPaths('./data')[0:10]
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
         test_len:]
 
-    transformList = [
-        {
-            "audio": [
-                audiomentations.AddGaussianNoise(min_amplitude=0.001,
-                                                 max_amplitude=0.015,
-                                                 p=0.5),
-                audiomentations.TimeStretch(min_rate=0.8,
-                                            max_rate=1.2,
-                                            p=0.5,
-                                            leave_length_unchanged=False),
-                audiomentations.PitchShift(min_semitones=-4,
-                                           max_semitones=4,
-                                           p=0.5),
-                audiomentations.Shift(min_fraction=-0.5,
-                                      max_fraction=0.5,
-                                      p=0.5),
-            ],
-        },
-        {
-            "audio": [audiomentations.AddGaussianNoise(),]
-        },
-        {
-            "spectrogram": [
-                torchaudio.transforms.TimeMasking(80),
-                torchaudio.transforms.FrequencyMasking(80)
-            ],
-        },
-    ]
+    if config['data'].getboolean('do_augmentations'):
+        transformList = [
+            {
+                "audio": [
+                    audiomentations.TimeStretch(min_rate=0.8,
+                                                max_rate=1.2,
+                                                p=0.5,
+                                                leave_length_unchanged=False),
+                    audiomentations.AddGaussianNoise(min_amplitude=0.001,
+                                                     max_amplitude=0.015,
+                                                     p=0.5),
+                    audiomentations.PitchShift(min_semitones=-4,
+                                               max_semitones=4,
+                                               p=0.5),
+                    audiomentations.Shift(min_fraction=-0.5,
+                                          max_fraction=0.5,
+                                          p=0.5),
+                ],
+            },
+            {
+                "audio": [audiomentations.AddGaussianNoise(), ]
+            },
+            {
+                "spectrogram": [
+                    torchaudio.transforms.TimeMasking(80),
+                    torchaudio.transforms.FrequencyMasking(80)
+                ],
+            },
+        ]
+    else:
+        transformList = []
 
     # create dataset with transforms (as required)
     audio_train_dataset = transformData(audio_train_paths, transformList)
-
     audio_val_dataset = transformData(audio_val_paths)
 
     print(
@@ -69,22 +72,26 @@ if __name__ == '__main__':
         batch_size=int(config['model']['batch_size']),
         num_workers=int(config['model']['num_workers']),
         shuffle=True,
+        pin_memory=True,
     )
 
     val_dataloader = torch.utils.data.DataLoader(
         audio_val_dataset,
         batch_size=int(config['model']['batch_size']),
-        num_workers=int(config['model']['num_workers']),
-        shuffle=True)
+        num_workers=1,
+        shuffle=False,
+        pin_memory=True,
+    )
 
     # create model and parameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model = ResNet18.to(device)
 
-    cost = torch.nn.CrossEntropyLoss()
+    lossFn = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=float(config['model']['learning_rate']))
+
     epochs = int(config['model']['num_epochs'])
 
     title = config['model']['title'] if config['model'][
@@ -100,18 +107,19 @@ if __name__ == '__main__':
     else:
         for i in config['logger']:
             config['logger'][i] = 'false'
+        train_loss_list = []
+        train_acc_list = []
+        val_loss_list = []
+        val_acc_list = []
 
     #  train model
-    train_loss_list = []
-    train_acc_list = []
-    val_loss_list =[]
-    val_acc_list = []
+
     for epoch in range(epochs):
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
-            model, train_dataloader, cost, optimizer, device)
+            model, train_dataloader, lossFn, optimizer, device)
         val_loss, val_accuracy = machineLearning.val(model, val_dataloader,
-                                                     cost, device)
+                                                     lossFn, device)
         if config['logger'].getboolean('log_iter_params'):
             machineLearning.tensorBoardLogging(writer, train_loss,
                                                train_accuracy, val_loss,
@@ -125,8 +133,24 @@ if __name__ == '__main__':
             print(
                 f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
 
-    torch.save(model.state_dict, f'saved_model/{title}.pt')
-    print("trainLoss = ", train_loss_list)
-    print("trainAcc = ", train_acc_list)
-    print("valLoss = ", val_loss_list)
-    print("valAcc = ", val_acc_list)
+        # save model checkpoint
+        if epoch % 5 == 0 and epoch > 0:
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'loss': lossFn,
+            }, f'saved_model/{title}_cp{int(epoch/5)}.pt')
+# TODO: check if file exists before saving
+    # torch.save({
+    #     'epoch': epoch,
+    #     'model_state_dict': model.state_dict(),
+    #     'optimizer_state_dict': optimizer.state_dict(),
+    #     'loss': lossFn,
+    # }, f'saved_model/{title}.pt')
+
+    if not config['logger'].getboolean('master_logger'):
+        print("trainLoss = ", train_loss_list)
+        print("trainAcc = ", train_acc_list)
+        print("valLoss = ", val_loss_list)
+        print("valAcc = ", val_acc_list)

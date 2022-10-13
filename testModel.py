@@ -1,5 +1,4 @@
 from pathlib import Path
-import Augmentation
 import torchaudio
 from torch.utils.data import Dataset, DataLoader
 import torch
@@ -11,37 +10,61 @@ import os
 import machineLearning
 from model import ResNet18
 from configparser import ConfigParser
-import matplotlib.pyplot as plt
 from AudioDataset import AudioDataset
 import Augmentation
+from pathlib import Path
+import random
+
+# To ensure reproducibility
+random.seed(0)
+torch.manual_seed(0)
+
+class_map = ['air conditioner', 'car horn', 'children playing', 'dog bark',
+             'drilling', 'engine idling', 'gunshot', 'jackhammer', 'siren', 'street music']
 
 
-def predict(model, input, target, class_mapping):
+def predictFolder(folderPath):
+    # load urban sound dataset
+    audio_paths = Augmentation.getAudio(folderPath)
+
+    # get a sample from the us dataset for inference
+    audio_test_dataset = AudioDataset(audio_paths)
+
+    test_dataloader = torch.utils.data.DataLoader(
+        audio_test_dataset,
+        batch_size=64,
+        num_workers=0,
+        shuffle=True,
+    )
+
+    test_loss, test_acc = (machineLearning.val(
+        model, test_dataloader, torch.nn.CrossEntropyLoss(), device))
+    print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
+
+
+def predictFile(filePath):
+    dataset = AudioDataset([filePath])
+
+    testData = torch.unsqueeze(dataset[0][0], 0).to(device)
     model.eval()
     with torch.no_grad():
-        predictions = model(input)
-        predicted_index = predictions[0].argmax(0)
-        predicted = class_mapping[predicted_index]
-        expected = class_mapping[target]
-    return predicted, expected
+        pred = model(testData)
+        sm = torch.nn.Softmax()
+        pred = sm(pred)
+        print(f'Probabilities: {pred.tolist()}')
+        print(class_map[pred.argmax()])
 
 
 if __name__ == "__main__":
     # load back the model
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    cnn = ResNet18.to(device)    
-    state_dict = torch.load("saved_model/cnn.pth", map_location=device)
-    cnn.load_state_dict(state_dict)
-    # load urban sound dataset
-    audio_paths = Augmentation.getAudio('./data/testset')
-    # get a sample from the us dataset for inference
-    audio_test_dataset = AudioDataset(audio_paths)
-    test_dataloader = torch.utils.data.DataLoader(
-        audio_test_dataset,
-        batch_size=12,
-        num_workers=0,
-        shuffle=True,
-    )
+    model_paths = [str(p) for p in Path('./saved_model/').glob(f'*.pt')]
+    for i, model_path in enumerate(model_paths):
+        print(f'[{i}] {model_path}')
 
-    test_loss, test_acc = (machineLearning.val(cnn, test_dataloader, torch.nn.CrossEntropyLoss(), device))
-    print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
+    path = model_paths[int(input('Select saved model > '))]
+    model = torch.load(path)
+    model.to(device)
+
+    predictFile('./test/test.wav')
+    predictFolder('./data/testset')

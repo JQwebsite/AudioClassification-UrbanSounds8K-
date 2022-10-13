@@ -8,19 +8,24 @@ from pathlib import Path
 import os
 
 from Augmentation import Augmentor
-from audiomentations import Compose
+
 import numpy as np
+from audiomentations import Compose
+from configparser import ConfigParser
+import warnings
+warnings.simplefilter("ignore")
 
 
 def transformData(audio_paths, transformParams=None):
     """
     Outputs spectrogram in addition to any transforms indicated in transformParams (dictionary)
-    
+
     audio_paths: List of .wav paths for dataset
     transformParams: List of dictionary with keys audio and spectrogram
     """
     transformedDataset = AudioDataset(audio_paths)
     if transformParams:
+
         for transform in transformParams:
             audio_train_dataset = AudioDataset(
                 audio_paths,
@@ -53,10 +58,10 @@ class AudioDataset(Dataset):
 
         self.audioAugment = Compose(
             audioTransformList) if audioTransformList else None
-
         self.audio_paths = audio_paths
 
         self.Augmentor = Augmentor()
+        self.config = ConfigParser().read('config.ini')
 
     def __len__(self):
         return len(self.audio_paths)
@@ -67,15 +72,18 @@ class AudioDataset(Dataset):
 
         title, _ = os.path.splitext(filename)
 
-        fsID, classID, occurrenceID, sliceID = [
-            int(n) for n in title.split('-')
-        ]
+        try:
+            fsID, classID, occurrenceID, sliceID = [
+                int(n) for n in title.split('-')
+            ]
+        except ValueError:
+            classID = 0
 
         waveform, sample_rate = self.Augmentor.audio_preprocessing(
             torchaudio.load(self.audio_paths[idx]))
 
         if self.audioAugment:
-            waveform = self.audioAugment(waveform.numpy(), 44100)
+            waveform = self.audioAugment(waveform.numpy(), sample_rate)
             if not torch.is_tensor(waveform):
                 waveform = torch.from_numpy(waveform)
 
@@ -86,9 +94,8 @@ class AudioDataset(Dataset):
 
         spectrogram_tensor = (spectrogram(waveform) + 1e-12).log2()
 
-        assert spectrogram_tensor.shape == torch.Size(
-            [1, 201,
-             1103]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
+        # assert spectrogram_tensor.shape == torch.Size(
+        #     [1, 201, 201]), f"Spectrogram size mismatch! {spectrogram_tensor.shape}"
 
         if self.specTransformList:
 
@@ -97,3 +104,6 @@ class AudioDataset(Dataset):
                 spectrogram_tensor = transform(spectrogram_tensor)
 
         return [spectrogram_tensor, classID]
+
+
+# TODO add __main__ as test function

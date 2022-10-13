@@ -3,14 +3,15 @@ from tqdm import tqdm
 import torchmetrics
 
 
-
+# TODO: add if audio > 4 sec, convert to 4 seconds first.
+# TODO: find issue where model is loaded everytime
 
 def train(model, dataloader, cost, optimizer, device):
     acc_metric = torchmetrics.Accuracy().to(device)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
     train_loss, train_accuracy = 0, 0
-    train_size = batch_size * total_batch
+    train_size = len(dataloader.dataset)
     model.train()
     print(f'Total train batch: {total_batch}')
     for batch, (X, Y) in tqdm(enumerate(dataloader), unit='batch'):
@@ -25,7 +26,7 @@ def train(model, dataloader, cost, optimizer, device):
         train_accuracy += batch_accuracy.item()
         if batch % 50 == 0:
             print(
-                f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%")
+                f" Loss (per sample): {batch_loss.item()/batch_size}  Accuracy: {batch_accuracy*100}%")
     train_loss /= train_size
     train_accuracy = acc_metric.compute() * 100
     acc_metric.reset()
@@ -37,7 +38,9 @@ def val(model, dataloader, cost, device):
     val_size = len(dataloader.dataset)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
+    
     val_loss, val_accuracy = 0, 0
+
     model.eval()
     print(f'Total eval batch: {total_batch}')
     with torch.no_grad():
@@ -49,7 +52,7 @@ def val(model, dataloader, cost, device):
             val_loss += batch_loss.item()
             if batch % 100 == 0:
                 print(
-                    f" Loss: {batch_loss.item()}  Accuracy: {batch_accuracy*100}%"
+                    f" Loss (per sample): {batch_loss.item()/batch_size}  Accuracy: {batch_accuracy*100}%"
                 )
     val_loss /= val_size
     val_accuracy = acc_metric.compute() * 100

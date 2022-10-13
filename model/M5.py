@@ -40,3 +40,6 @@ class M5(nn.Module):
         x = self.pool4(x)
         x = self.fc1(x)
         return x[:, -1]
+
+
+
