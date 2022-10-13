@@ -5,14 +5,11 @@ import torch
 import torch.nn as nn
 from torchvision import datasets
 import numpy as np
-from torch.utils.data import Dataset, DataLoader
 import os
 import machineLearning
 from model import ResNet18
-from configparser import ConfigParser
 from AudioDataset import AudioDataset
 import Augmentation
-from pathlib import Path
 import random
 
 # To ensure reproducibility
@@ -37,8 +34,8 @@ def predictFolder(folderPath):
         shuffle=True,
     )
 
-    test_loss, test_acc = (machineLearning.val(
-        model, test_dataloader, torch.nn.CrossEntropyLoss(), device))
+    test_loss, test_acc = machineLearning.val(
+        model, test_dataloader, torch.nn.CrossEntropyLoss(), device)
     print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
 
 
