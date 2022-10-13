@@ -19,7 +19,7 @@ if __name__ == '__main__':
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data')[0:10]
+    audio_paths = Augmentation.getAudioPaths('./data')
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -135,19 +135,9 @@ if __name__ == '__main__':
 
         # save model checkpoint
         if epoch % 5 == 0 and epoch > 0:
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': lossFn,
-            }, f'saved_model/{title}_cp{int(epoch/5)}.pt')
+            torch.save(model, f'saved_model/{title}_cp{int(epoch/5)}.pt')
 # TODO: check if file exists before saving
-    # torch.save({
-    #     'epoch': epoch,
-    #     'model_state_dict': model.state_dict(),
-    #     'optimizer_state_dict': optimizer.state_dict(),
-    #     'loss': lossFn,
-    # }, f'saved_model/{title}.pt')
+    torch.save(model, f'saved_model/{title}.pt')
 
     if not config['logger'].getboolean('master_logger'):
         print("trainLoss = ", train_loss_list)

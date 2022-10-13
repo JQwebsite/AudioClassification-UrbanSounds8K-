@@ -4,7 +4,6 @@ import torchmetrics
 
 
 # TODO: add if audio > 4 sec, convert to 4 seconds first.
-# TODO: find issue where model is loaded everytime
 
 def train(model, dataloader, cost, optimizer, device):
     acc_metric = torchmetrics.Accuracy().to(device)
@@ -38,7 +37,7 @@ def val(model, dataloader, cost, device):
     val_size = len(dataloader.dataset)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
-    
+
     val_loss, val_accuracy = 0, 0
 
     model.eval()
