@@ -68,15 +68,11 @@ def eval(model, dataloader, cost, device):
 
 
 def tensorBoardLogging(writer, train_loss, train_accuracy, val_loss,
-                       val_accuracy, confusion_matrix, epoch):
-    import seaborn as sn
-
+                       val_accuracy, epoch):
     writer.add_scalar('1 Training/1 Model loss', train_loss, epoch)
     writer.add_scalar('1 Training/2 Model accuracy', train_accuracy, epoch)
     writer.add_scalar('2 Validate/1 Model loss', val_loss, epoch)
     writer.add_scalar('2 Validate/2 Model accuracy', val_accuracy, epoch)
-    heatmap = sn.heatmap(confusion_matrix.cpu(), annot=True)
-    writer.add_figure("Confusion Matrix", heatmap)
     writer.close()
 
 

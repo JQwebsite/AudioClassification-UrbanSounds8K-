@@ -11,6 +11,7 @@ from model import ResNet18
 from AudioDataset import AudioDataset
 import Augmentation
 import random
+import seaborn as sn
 
 # To ensure reproducibility
 random.seed(0)
@@ -20,7 +21,7 @@ class_map = ['air conditioner', 'car horn', 'children playing', 'dog bark',
              'drilling', 'engine idling', 'gunshot', 'jackhammer', 'siren', 'street music']
 
 
-def predictFolder(folderPath):
+def predictFolder(folderPath, model, device):
     # load urban sound dataset
     audio_paths = Augmentation.getAudio(folderPath)
 
@@ -37,10 +38,10 @@ def predictFolder(folderPath):
     test_loss, test_acc, confusion_matrix = machineLearning.eval(
         model, test_dataloader, torch.nn.CrossEntropyLoss(), device)
     print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
-    print(confusion_matrix)
+    sn.heatmap(confusion_matrix.cpu(), annot=True)
 
 
-def predictFile(filePath):
+def predictFile(filePath, model, device):
     dataset = AudioDataset([filePath])
     testData = torch.unsqueeze(dataset[0][0], 0).to(device)
     model.eval()
@@ -60,8 +61,7 @@ if __name__ == "__main__":
         print(f'[{i}] {model_path}')
 
     path = model_paths[int(input('Select saved model > '))]
-    model = torch.load(path)
-    model.to(device)
+    model = torch.load(path, map_location=device)
 
-    predictFile('./test/test.wav')
-    predictFolder('./data/testset')
+    predictFile('./test/test.wav', model, device)
+    predictFolder('./data/testset', model, device)

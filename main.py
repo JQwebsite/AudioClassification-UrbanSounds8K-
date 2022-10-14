@@ -15,7 +15,6 @@ import audiomentations
 
 # TODO: add hparams to tensorboard
 
-
 def uniquify(path):
     filename, extension = os.path.splitext(path)
     counter = 1
@@ -33,7 +32,7 @@ if __name__ == '__main__':
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data')[0:5]
+    audio_paths = Augmentation.getAudioPaths('./data')
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -103,7 +102,9 @@ if __name__ == '__main__':
     # create model and parameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = ResNet18.to(device)
+    # model = ResNet18.to(device)
+
+    model = torch.load('./saved_model/NoAugmentations8K.pt')
 
     lr = float(config['model']['learning_rate'])
     epochs = int(config['model']['num_epochs'])
@@ -120,9 +121,6 @@ if __name__ == '__main__':
         if config['logger'].getboolean('log_graph'):
             spec, label = next(iter(train_dataloader))
             writer.add_graph(model, spec.to(device))
-        if config['logger'].getboolean('log_model_params'):
-            writer.add_hparams(
-                {'Learning Rate': lr,  'Batch Size': bsize, 'Epochs': epochs})
         writer.close()
     else:
         for i in config['logger']:
@@ -139,22 +137,25 @@ if __name__ == '__main__':
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
             model, train_dataloader, lossFn, optimizer, device)
-        val_loss, val_accuracy, confusion_matrix = machineLearning.eval(model, val_dataloader,
-                                                                        lossFn, device)
+        val_loss, val_accuracy, _ = machineLearning.eval(model, val_dataloader,
+                                                         lossFn, device)
         if config['logger'].getboolean('log_iter_params'):
 
             machineLearning.tensorBoardLogging(writer, train_loss,
                                                train_accuracy, val_loss,
-                                               val_accuracy, confusion_matrix, epoch)
+                                               val_accuracy, epoch)
         else:
             machineLearning.manualLogging(
                 train_loss, train_accuracy, val_loss, val_accuracy)
+
         # save model checkpoint
         if epoch % 5 == 0 and epoch > 0:
             torch.save(model, uniquify(
-                f'saved_model/{title}_cp{int(epoch/5)}.pt'))
+                f'saved_model/{title}_epoch{epoch}.pt'))
+            if config['logger'].getboolean('log_model_params'):
+                writer.add_hparams(
+                    {'Learning Rate': lr, 'Batch Size': bsize, 'Epochs': epoch+10}, {'Accuracy': val_accuracy, 'Loss': val_loss})
 
-    # TODO: check if file exists before saving
     torch.save(model, uniquify(f'saved_model/{title}.pt'))
 
     # Print out values for logging
