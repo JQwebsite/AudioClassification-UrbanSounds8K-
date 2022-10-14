@@ -81,7 +81,7 @@ class AudioDataset(Dataset):
 
         waveform, sample_rate = self.Augmentor.audio_preprocessing(
             torchaudio.load(self.audio_paths[idx]))
-
+        
         if self.audioAugment:
             waveform = self.audioAugment(waveform.numpy(), sample_rate)
             if not torch.is_tensor(waveform):

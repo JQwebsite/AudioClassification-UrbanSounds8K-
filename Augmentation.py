@@ -19,18 +19,18 @@ class Augmentor():
     audio_sampling = int(config['augmentations']['sample_rate'])
 
     def audio_preprocessing(self, audioIn):
-        return self.__resample(self.__rechannel(audioIn))
+        return self.pad_trunc(self.__resample(self.__rechannel(audioIn)), True)
 
-    def pad_trunc(self, aud):
+    def pad_trunc(self, aud, reduce_only=False):
         sig, sr = aud
         num_rows, sig_len = sig.shape
         max_len = int(sr / 1000 * self.audio_duration)
-
+        # TODO: make this random instead of at the start
         if (sig_len > max_len):
             # Truncate the signal to the given length
             sig = sig[:, :max_len]
 
-        elif (sig_len < max_len):
+        elif (sig_len < max_len and not reduce_only):
             # Length of padding to add at the beginning and end of the signal
             pad_begin_len = random.randint(0, max_len - sig_len)
             pad_end_len = max_len - sig_len - pad_begin_len
@@ -88,4 +88,7 @@ def getAudio(path):
 
 if __name__ == '__main__':
     paths = getAudioPaths('data')
-    print(paths)
+    a = torch.zeros([1, 10010000])
+    print(a.shape)
+    a, _ = Augmentor().pad_trunc([a, 8000], False)
+    print(a.shape)

@@ -67,5 +67,5 @@ if __name__ == "__main__":
     path = model_paths[int(input('Select saved model > '))]
     model = torch.load(path, map_location=device)
 
-    predictFile('./test/test.wav', model, device)
-    predictFolder('./data/testset', model, device)
+    predictFile('./test/order-99518.wav', model, device)
+    # predictFolder('./data/testset', model, device)

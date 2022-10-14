@@ -4,8 +4,6 @@ import torchmetrics
 
 
 # TODO: add if audio > 4 sec, convert to 4 seconds first.
-# TODO: confusion matrix
-
 
 def train(model, dataloader, cost, optimizer, device):
     acc_metric = torchmetrics.Accuracy().to(device)
