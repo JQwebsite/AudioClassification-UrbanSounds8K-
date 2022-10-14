@@ -105,8 +105,8 @@ if __name__ == '__main__':
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
             model, train_dataloader, cost, optimizer, device)
-        val_loss, val_accuracy = machineLearning.val(model, val_dataloader,
-                                                     cost, device)
+        val_loss, val_accuracy = machineLearning.eval(model, val_dataloader,
+                                                      cost, device)
         if config['logger'].getboolean('log_iter_params'):
             machineLearning.tensorBoardLogging(writer, train_loss,
                                                train_accuracy, val_loss,

@@ -34,14 +34,14 @@ def predictFolder(folderPath):
         shuffle=True,
     )
 
-    test_loss, test_acc = machineLearning.val(
+    test_loss, test_acc, confusion_matrix = machineLearning.eval(
         model, test_dataloader, torch.nn.CrossEntropyLoss(), device)
     print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
+    print(confusion_matrix)
 
 
 def predictFile(filePath):
     dataset = AudioDataset([filePath])
-
     testData = torch.unsqueeze(dataset[0][0], 0).to(device)
     model.eval()
     with torch.no_grad():

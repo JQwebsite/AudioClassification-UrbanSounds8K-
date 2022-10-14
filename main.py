@@ -13,13 +13,27 @@ from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 import audiomentations
 
+# TODO: add hparams to tensorboard
+
+
+def uniquify(path):
+    filename, extension = os.path.splitext(path)
+    counter = 1
+
+    while os.path.exists(path):
+        path = filename + " (" + str(counter) + ")" + extension
+        counter += 1
+
+    return path
+
+
 if __name__ == '__main__':
 
     config = ConfigParser()
     config.read('config.ini')
 
     # Get Audio paths for dataset
-    audio_paths = Augmentation.getAudioPaths('./data')
+    audio_paths = Augmentation.getAudioPaths('./data')[0:5]
     test_len = int(
         int(config['data']['train_percent']) / 100 * len(audio_paths))
     audio_train_paths, audio_val_paths = audio_paths[:test_len], audio_paths[
@@ -66,18 +80,21 @@ if __name__ == '__main__':
     )
     print(f'Validation dataset Length: {len(audio_val_dataset)}')
 
+    bsize = int(config['model']['batch_size'])
+    workers = int(config['model']['num_workers'])
+
     # create datalaoder for model
     train_dataloader = torch.utils.data.DataLoader(
         audio_train_dataset,
-        batch_size=int(config['model']['batch_size']),
-        num_workers=int(config['model']['num_workers']),
+        batch_size=bsize,
+        num_workers=workers,
         shuffle=True,
         pin_memory=True,
     )
 
     val_dataloader = torch.utils.data.DataLoader(
         audio_val_dataset,
-        batch_size=int(config['model']['batch_size']),
+        batch_size=bsize,
         num_workers=1,
         shuffle=False,
         pin_memory=True,
@@ -88,11 +105,11 @@ if __name__ == '__main__':
 
     model = ResNet18.to(device)
 
-    lossFn = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=float(config['model']['learning_rate']))
-
+    lr = float(config['model']['learning_rate'])
     epochs = int(config['model']['num_epochs'])
+
+    lossFn = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr)
 
     title = config['model']['title'] if config['model'][
         'title'] else datetime.now().strftime("%Y-%m-%d,%H-%M-%S")
@@ -103,6 +120,9 @@ if __name__ == '__main__':
         if config['logger'].getboolean('log_graph'):
             spec, label = next(iter(train_dataloader))
             writer.add_graph(model, spec.to(device))
+        if config['logger'].getboolean('log_model_params'):
+            writer.add_hparams(
+                {'Learning Rate': lr,  'Batch Size': bsize, 'Epochs': epochs})
         writer.close()
     else:
         for i in config['logger']:
@@ -111,6 +131,7 @@ if __name__ == '__main__':
         train_acc_list = []
         val_loss_list = []
         val_acc_list = []
+        confusion_matrix_list = []
 
     #  train model
 
@@ -118,27 +139,25 @@ if __name__ == '__main__':
         print(f'Epoch {epoch+1}/{epochs}\n-------------------------------')
         train_loss, train_accuracy = machineLearning.train(
             model, train_dataloader, lossFn, optimizer, device)
-        val_loss, val_accuracy = machineLearning.val(model, val_dataloader,
-                                                     lossFn, device)
+        val_loss, val_accuracy, confusion_matrix = machineLearning.eval(model, val_dataloader,
+                                                                        lossFn, device)
         if config['logger'].getboolean('log_iter_params'):
+
             machineLearning.tensorBoardLogging(writer, train_loss,
                                                train_accuracy, val_loss,
-                                               val_accuracy, epoch)
+                                               val_accuracy, confusion_matrix, epoch)
         else:
-            train_acc_list.append(train_accuracy)
-            train_loss_list.append(train_loss)
-            val_acc_list.append(val_accuracy)
-            val_loss_list.append(val_loss)
-            print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
-            print(
-                f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
-
+            machineLearning.manualLogging(
+                train_loss, train_accuracy, val_loss, val_accuracy)
         # save model checkpoint
         if epoch % 5 == 0 and epoch > 0:
-            torch.save(model, f'saved_model/{title}_cp{int(epoch/5)}.pt')
-# TODO: check if file exists before saving
-    torch.save(model, f'saved_model/{title}.pt')
+            torch.save(model, uniquify(
+                f'saved_model/{title}_cp{int(epoch/5)}.pt'))
 
+    # TODO: check if file exists before saving
+    torch.save(model, uniquify(f'saved_model/{title}.pt'))
+
+    # Print out values for logging
     if not config['logger'].getboolean('master_logger'):
         print("trainLoss = ", train_loss_list)
         print("trainAcc = ", train_acc_list)

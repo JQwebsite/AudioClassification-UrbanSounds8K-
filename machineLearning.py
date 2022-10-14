@@ -4,9 +4,12 @@ import torchmetrics
 
 
 # TODO: add if audio > 4 sec, convert to 4 seconds first.
+# TODO: confusion matrix
+
 
 def train(model, dataloader, cost, optimizer, device):
     acc_metric = torchmetrics.Accuracy().to(device)
+
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
     train_loss, train_accuracy = 0, 0
@@ -32,8 +35,12 @@ def train(model, dataloader, cost, optimizer, device):
     return (train_loss, train_accuracy)
 
 
-def val(model, dataloader, cost, device):
+def eval(model, dataloader, cost, device):
     acc_metric = torchmetrics.Accuracy().to(device)
+    confusion_matrix = torchmetrics.classification.MulticlassConfusionMatrix(
+        10).to(device)
+    matrix = torch.zeros([10, 10], device=device)
+
     val_size = len(dataloader.dataset)
     batch_size = len(next(iter(dataloader))[1])
     total_batch = len(dataloader)
@@ -53,16 +60,32 @@ def val(model, dataloader, cost, device):
                 print(
                     f" Loss (per sample): {batch_loss.item()/batch_size}  Accuracy: {batch_accuracy*100}%"
                 )
+            matrix += confusion_matrix(pred, Y)
     val_loss /= val_size
     val_accuracy = acc_metric.compute() * 100
     acc_metric.reset()
-    return (val_loss, val_accuracy)
+    return (val_loss, val_accuracy, matrix)
 
 
 def tensorBoardLogging(writer, train_loss, train_accuracy, val_loss,
-                       val_accuracy, epoch):
+                       val_accuracy, confusion_matrix, epoch):
+    import seaborn as sn
+
     writer.add_scalar('1 Training/1 Model loss', train_loss, epoch)
     writer.add_scalar('1 Training/2 Model accuracy', train_accuracy, epoch)
     writer.add_scalar('2 Validate/1 Model loss', val_loss, epoch)
     writer.add_scalar('2 Validate/2 Model accuracy', val_accuracy, epoch)
+    heatmap = sn.heatmap(confusion_matrix.cpu(), annot=True)
+    writer.add_figure("Confusion Matrix", heatmap)
     writer.close()
+
+
+def manualLogging(train_loss, train_accuracy, val_loss, val_accuracy):
+    global train_acc_list, train_loss_list, val_acc_list, val_loss_list
+    train_acc_list.append(train_accuracy)
+    train_loss_list.append(train_loss)
+    val_acc_list.append(val_accuracy)
+    val_loss_list.append(val_loss)
+    print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
+    print(
+        f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
