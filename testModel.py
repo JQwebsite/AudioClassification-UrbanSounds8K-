@@ -12,6 +12,7 @@ from AudioDataset import AudioDataset
 import Augmentation
 import random
 import seaborn as sn
+import matplotlib.pyplot as plt
 
 # To ensure reproducibility
 random.seed(0)
@@ -38,7 +39,9 @@ def predictFolder(folderPath, model, device):
     test_loss, test_acc, confusion_matrix = machineLearning.eval(
         model, test_dataloader, torch.nn.CrossEntropyLoss(), device)
     print(f'Validating  | Loss: {test_loss} Accuracy: {test_acc}% \n')
-    sn.heatmap(confusion_matrix.cpu(), annot=True)
+    sn.heatmap(confusion_matrix.cpu(), annot=True,
+               xticklabels=class_map, yticklabels=class_map)
+    plt.show()
 
 
 def predictFile(filePath, model, device):
@@ -49,8 +52,9 @@ def predictFile(filePath, model, device):
         pred = model(testData)
         sm = torch.nn.Softmax()
         pred = sm(pred)
-        print(f'Probabilities: {pred.tolist()}')
         print(class_map[pred.argmax()])
+        sn.barplot(y=class_map, x=pred[0].cpu().numpy())
+        plt.show()
 
 
 if __name__ == "__main__":
