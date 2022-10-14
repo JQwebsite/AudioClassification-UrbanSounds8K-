@@ -145,8 +145,13 @@ if __name__ == '__main__':
                                                train_accuracy, val_loss,
                                                val_accuracy, epoch)
         else:
-            machineLearning.manualLogging(
-                train_loss, train_accuracy, val_loss, val_accuracy)
+            train_acc_list.append(train_accuracy)
+            train_loss_list.append(train_loss)
+            val_acc_list.append(val_accuracy)
+            val_loss_list.append(val_loss)
+
+        print(f'Training    | Loss: {train_loss} Accuracy: {train_accuracy}%')
+        print(f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
 
         # save model checkpoint
         if epoch % 5 == 0 and epoch > 0:

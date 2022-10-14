@@ -25,10 +25,12 @@ class Augmentor():
         sig, sr = aud
         num_rows, sig_len = sig.shape
         max_len = int(sr / 1000 * self.audio_duration)
+
         # TODO: make this random instead of at the start
         if (sig_len > max_len):
-            # Truncate the signal to the given length
-            sig = sig[:, :max_len]
+            start_len = random.randint(0, sig_len - max_len)
+            sig = sig[:, start_len:start_len+max_len]
+            assert (sig.shape[1] == max_len)
 
         elif (sig_len < max_len and not reduce_only):
             # Length of padding to add at the beginning and end of the signal

@@ -3,8 +3,6 @@ from tqdm import tqdm
 import torchmetrics
 
 
-# TODO: add if audio > 4 sec, convert to 4 seconds first.
-
 def train(model, dataloader, cost, optimizer, device):
     acc_metric = torchmetrics.Accuracy().to(device)
 
@@ -73,13 +71,3 @@ def tensorBoardLogging(writer, train_loss, train_accuracy, val_loss,
     writer.add_scalar('2 Validate/2 Model accuracy', val_accuracy, epoch)
     writer.close()
 
-
-def manualLogging(train_loss, train_accuracy, val_loss, val_accuracy):
-    global train_acc_list, train_loss_list, val_acc_list, val_loss_list
-    train_acc_list.append(train_accuracy)
-    train_loss_list.append(train_loss)
-    val_acc_list.append(val_accuracy)
-    val_loss_list.append(val_loss)
-    print(f'Training | Loss: {train_loss} Accuracy: {train_accuracy}%')
-    print(
-        f'Validating  | Loss: {val_loss} Accuracy: {val_accuracy}% \n')
