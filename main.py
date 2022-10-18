@@ -15,6 +15,7 @@ import audiomentations
 
 # TODO: add hparams to tensorboard
 
+
 def uniquify(path):
     filename, extension = os.path.splitext(path)
     counter = 1
@@ -47,7 +48,7 @@ if __name__ == '__main__':
                                                 p=0.5,
                                                 leave_length_unchanged=False),
                     audiomentations.AddGaussianNoise(min_amplitude=0.001,
-                                                     max_amplitude=0.015,
+                                                     max_amplitude=0.025,
                                                      p=0.5),
                     audiomentations.PitchShift(min_semitones=-4,
                                                max_semitones=4,
@@ -56,9 +57,6 @@ if __name__ == '__main__':
                                           max_fraction=0.5,
                                           p=0.5),
                 ],
-            },
-            {
-                "audio": [audiomentations.AddGaussianNoise(), ]
             },
             {
                 "spectrogram": [
@@ -99,7 +97,7 @@ if __name__ == '__main__':
         pin_memory=True,
     )
 
-    # create model and parameters
+    # create model and par4ameters
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # model = ResNet18.to(device)
@@ -117,7 +115,7 @@ if __name__ == '__main__':
 
     # TensorBoard logging (as required)
     if config['logger'].getboolean('master_logger'):
-        writer = SummaryWriter(f'./logs/{title}')
+        writer = SummaryWriter(uniquify(f'./logs/{title}'))
         if config['logger'].getboolean('log_graph'):
             spec, label = next(iter(train_dataloader))
             writer.add_graph(model, spec.to(device))
