@@ -1,13 +1,8 @@
 from pathlib import Path
-import torchaudio
 from torch.utils.data import Dataset, DataLoader
 import torch
 import torch.nn as nn
-from torchvision import datasets
-import numpy as np
-import os
 import machineLearning
-from model import ResNet18
 from AudioDataset import AudioDataset
 import Augmentation
 import random

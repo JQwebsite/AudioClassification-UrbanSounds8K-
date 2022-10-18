@@ -77,7 +77,7 @@ class AudioDataset(Dataset):
                 int(n) for n in title.split('-')
             ]
         except ValueError:
-            classID = 0
+            classID = -1
 
         waveform, sample_rate = self.Augmentor.audio_preprocessing(
             torchaudio.load(self.audio_paths[idx]))
