@@ -1,7 +1,6 @@
 import torch
 import torchaudio
 import random
-from torch.utils.data import Dataset, DataLoader
 from configparser import ConfigParser
 from pathlib import Path
 import os
@@ -26,7 +25,6 @@ class Augmentor():
         num_rows, sig_len = sig.shape
         max_len = int(sr / 1000 * self.audio_duration)
 
-        # TODO: make this random instead of at the start
         if (sig_len > max_len):
             start_len = random.randint(0, sig_len - max_len)
             sig = sig[:, start_len:start_len+max_len]
